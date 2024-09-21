@@ -1,4 +1,4 @@
-import { CircleAlertIcon } from "lucide-react";
+import { CircleAlertIcon, Trash } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,10 +20,16 @@ import {
 import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
 import { useEffect, useState } from "react";
 import Logo from "../assets/logo.svg";
-import abi from "../abi/Clarity.json";
 
 import { useFunding } from "@dynamic-labs/sdk-react-core";
 import { useSmartWallet } from "@/hooks/useSmartWallet";
+
+import {
+  approve,
+  settlePaymentOnlyByBaseCurrencyTransaction,
+} from "../utils/contractFunctions";
+import { useSendSponsoredTransaction, useUserOpWait } from "@biconomy/use-aa";
+import { PaymasterMode } from "@biconomy/account";
 
 export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
   const [currency, setCurrency] =
@@ -35,10 +41,24 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
 
   const smartWallet = useSmartWallet();
 
+  const {
+    mutate,
+    data: userOpResponse,
+    error,
+    isPending,
+  } = useSendSponsoredTransaction();
+
+  const {
+    isLoading: waitIsLoading,
+    isSuccess: waitIsSuccess,
+    error: waitError,
+    data: waitData,
+  } = useUserOpWait(userOpResponse);
+
   const currencyToAddress = {
     ETH: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
     BTC: "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
-    USDc: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+    USDc: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
   };
 
   // const currencyToDecimals = {
@@ -58,16 +78,43 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    if (waitData?.success === "true") {
+      console.log(waitData?.receipt?.transactionHash);
+    }
+  }, [waitData]);
   const paymentHandler = async () => {
-    const clarityABI = abi.abi;
-    const contractAddress = "0x479eE4d9BF5109bF6d55211871BE775C2e95eE58";
+    console.log("paying");
     const tokenAddress = currencyToAddress[currency];
+    const txn1 = approve(tokenAddress, 5);
+    console.log('txn 1', txn1);
+    const txn2 = settlePaymentOnlyByBaseCurrencyTransaction(
+      "d7c2bcca-b768-41c9-947e-2ac8c8b801d1"
+    );
+    if (smartWallet) {
+      console.log("wallet exists");
+      const { waitForTxHash } = await smartWallet.sendTransaction(txn1, {
+        paymasterServiceData: {
+          mode: PaymasterMode.SPONSORED,
+        },
+        gasOffset: {
+          verificationGasLimitOffsetPct: 25,
+          preVerificationGasOffsetPct: 9.8,
+        }
+      });
+      const { transactionHash } = await waitForTxHash();
+
+      console.log(transactionHash);
+    }
+    // mutate({
+    //   transactions: [txn1, txn2],
+    // });
   };
 
   const handleOnRamp = async () => {
     await openFunding({
       token: "USDT",
-      address: smartWallet.accountAddress,
+      address: smartWallet?.accountAddress,
     });
   };
 
@@ -121,9 +168,14 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button className="w-full" onClick={paymentHandler}>
+        <Button
+          className="w-full"
+          onClick={() => {
+            paymentHandler();
+          }}
+        >
           <img src={Logo} alt="logo" className="w-4 h-4 mr-2" />
-          Pay with Clarity
+          {isPending || waitIsLoading ? "Loading..." : "Pay with Clarity"}
         </Button>
       </CardFooter>
     </Card>

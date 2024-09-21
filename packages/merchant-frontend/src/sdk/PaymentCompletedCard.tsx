@@ -17,6 +17,7 @@ import {
 } from "@worldcoin/idkit";
 import { useRootState } from "@/hooks/useRootState";
 
+
 interface PaymentCompletedCardProps {
   onSuccess: () => void;
 }
