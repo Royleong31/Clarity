@@ -148,9 +148,9 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
     let price;
     setFetchingQuote(true);
     if (currency === "USDC") {
-      setAmount(0.1);
+      setAmount(10);
     } else {
-      price = await getPrice(currencyToAddress[currency], 0.1);
+      price = await getPrice(currencyToAddress[currency], 10);
       setAmount(price / 10 ** currencyToDecimals[currency]);
     }
     setFetchingQuote(false);
