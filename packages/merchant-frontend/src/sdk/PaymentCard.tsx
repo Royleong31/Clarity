@@ -1,4 +1,4 @@
-import { CircleAlertIcon, Trash } from "lucide-react";
+import { CircleAlertIcon, Trash, Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -28,8 +28,8 @@ import {
   approve,
   settlePaymentOnlyByBaseCurrencyTransaction,
 } from "../utils/contractFunctions";
-import { useSendSponsoredTransaction, useUserOpWait } from "@biconomy/use-aa";
 import { PaymasterMode } from "@biconomy/account";
+import { useRootState } from "@/hooks/useRootState";
 
 export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
   const [currency, setCurrency] =
@@ -40,20 +40,8 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
   const { openFunding } = useFunding();
 
   const smartWallet = useSmartWallet();
-
-  const {
-    mutate,
-    data: userOpResponse,
-    error,
-    isPending,
-  } = useSendSponsoredTransaction();
-
-  const {
-    isLoading: waitIsLoading,
-    isSuccess: waitIsSuccess,
-    error: waitError,
-    data: waitData,
-  } = useUserOpWait(userOpResponse);
+  const { setRootState } = useRootState();
+  const [loading, setLoading] = useState(false);
 
   const currencyToAddress = {
     ETH: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
@@ -78,37 +66,46 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    if (waitData?.success === "true") {
-      console.log(waitData?.receipt?.transactionHash);
-    }
-  }, [waitData]);
   const paymentHandler = async () => {
     console.log("paying");
+    setLoading((prevState) => {
+      return true;
+    });
     const tokenAddress = currencyToAddress[currency];
-    const txn1 = approve(tokenAddress, 5);
-    console.log('txn 1', txn1);
-    const txn2 = settlePaymentOnlyByBaseCurrencyTransaction(
-      "d7c2bcca-b768-41c9-947e-2ac8c8b801d1"
-    );
+    const txn1 = approve(tokenAddress, 1000000000);
+    console.log("txn 1", txn1);
+    const orderId = someOrderId;
+
+    if (!orderId) {
+      setLoading(false);
+      return;
+    }
+    const txn2 = settlePaymentOnlyByBaseCurrencyTransaction(orderId);
+    console.log("txn 2", txn2);
     if (smartWallet) {
       console.log("wallet exists");
-      const { waitForTxHash } = await smartWallet.sendTransaction(txn1, {
-        paymasterServiceData: {
-          mode: PaymasterMode.SPONSORED,
-        },
-        gasOffset: {
-          verificationGasLimitOffsetPct: 25,
-          preVerificationGasOffsetPct: 9.8,
-        }
-      });
-      const { transactionHash } = await waitForTxHash();
 
+      const { wait, waitForTxHash } = await smartWallet.sendTransaction(
+        [txn1, txn2],
+        {
+          paymasterServiceData: {
+            mode: PaymasterMode.SPONSORED,
+          },
+          simulationType: "validation_and_execution",
+        }
+      );
+      console.log("sending txn 1");
+      const { reason } = await wait();
+      console.log("reason: ", reason);
+      const { transactionHash } = await waitForTxHash();
       console.log(transactionHash);
+      setLoading(false);
+      setRootState((prevState) => ({
+        ...prevState,
+        orderId: orderId,
+      }));
+      
     }
-    // mutate({
-    //   transactions: [txn1, txn2],
-    // });
   };
 
   const handleOnRamp = async () => {
@@ -174,8 +171,17 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
             paymentHandler();
           }}
         >
-          <img src={Logo} alt="logo" className="w-4 h-4 mr-2" />
-          {isPending || waitIsLoading ? "Loading..." : "Pay with Clarity"}
+          {loading ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Paying...
+            </>
+          ) : (
+            <>
+              <img src={Logo} alt="logo" className="w-4 h-4 mr-2" />
+              Pay with Clarity
+            </>
+          )}
         </Button>
       </CardFooter>
     </Card>
