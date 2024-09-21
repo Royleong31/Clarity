@@ -254,7 +254,8 @@ export enum Manager_OrderBy {
 export type Merchant = {
   __typename?: 'Merchant';
   id: Scalars['ID'];
-  user: User;
+  merchantId: Scalars['Int'];
+  address: Scalars['String'];
   revenue: Scalars['BigInt'];
   completedOrderCount: Scalars['BigInt'];
   reviewedOrderCount: Scalars['BigInt'];
@@ -270,27 +271,34 @@ export type Merchant_Filter = {
   id_lte?: InputMaybe<Scalars['ID']>;
   id_in?: InputMaybe<Array<Scalars['ID']>>;
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
-  user?: InputMaybe<Scalars['String']>;
-  user_not?: InputMaybe<Scalars['String']>;
-  user_gt?: InputMaybe<Scalars['String']>;
-  user_lt?: InputMaybe<Scalars['String']>;
-  user_gte?: InputMaybe<Scalars['String']>;
-  user_lte?: InputMaybe<Scalars['String']>;
-  user_in?: InputMaybe<Array<Scalars['String']>>;
-  user_not_in?: InputMaybe<Array<Scalars['String']>>;
-  user_contains?: InputMaybe<Scalars['String']>;
-  user_contains_nocase?: InputMaybe<Scalars['String']>;
-  user_not_contains?: InputMaybe<Scalars['String']>;
-  user_not_contains_nocase?: InputMaybe<Scalars['String']>;
-  user_starts_with?: InputMaybe<Scalars['String']>;
-  user_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  user_not_starts_with?: InputMaybe<Scalars['String']>;
-  user_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
-  user_ends_with?: InputMaybe<Scalars['String']>;
-  user_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  user_not_ends_with?: InputMaybe<Scalars['String']>;
-  user_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  user_?: InputMaybe<User_Filter>;
+  merchantId?: InputMaybe<Scalars['Int']>;
+  merchantId_not?: InputMaybe<Scalars['Int']>;
+  merchantId_gt?: InputMaybe<Scalars['Int']>;
+  merchantId_lt?: InputMaybe<Scalars['Int']>;
+  merchantId_gte?: InputMaybe<Scalars['Int']>;
+  merchantId_lte?: InputMaybe<Scalars['Int']>;
+  merchantId_in?: InputMaybe<Array<Scalars['Int']>>;
+  merchantId_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  address?: InputMaybe<Scalars['String']>;
+  address_not?: InputMaybe<Scalars['String']>;
+  address_gt?: InputMaybe<Scalars['String']>;
+  address_lt?: InputMaybe<Scalars['String']>;
+  address_gte?: InputMaybe<Scalars['String']>;
+  address_lte?: InputMaybe<Scalars['String']>;
+  address_in?: InputMaybe<Array<Scalars['String']>>;
+  address_not_in?: InputMaybe<Array<Scalars['String']>>;
+  address_contains?: InputMaybe<Scalars['String']>;
+  address_contains_nocase?: InputMaybe<Scalars['String']>;
+  address_not_contains?: InputMaybe<Scalars['String']>;
+  address_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  address_starts_with?: InputMaybe<Scalars['String']>;
+  address_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  address_not_starts_with?: InputMaybe<Scalars['String']>;
+  address_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  address_ends_with?: InputMaybe<Scalars['String']>;
+  address_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  address_not_ends_with?: InputMaybe<Scalars['String']>;
+  address_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   revenue?: InputMaybe<Scalars['BigInt']>;
   revenue_not?: InputMaybe<Scalars['BigInt']>;
   revenue_gt?: InputMaybe<Scalars['BigInt']>;
@@ -331,9 +339,8 @@ export type Merchant_Filter = {
 
 export enum Merchant_OrderBy {
   ID = 'id',
-  USER = 'user',
-  USER__ID = 'user__id',
-  USER__TYPE = 'user__type',
+  MERCHANTID = 'merchantId',
+  ADDRESS = 'address',
   REVENUE = 'revenue',
   COMPLETEDORDERCOUNT = 'completedOrderCount',
   REVIEWEDORDERCOUNT = 'reviewedOrderCount',
@@ -343,7 +350,9 @@ export enum Merchant_OrderBy {
 export type Order = {
   __typename?: 'Order';
   id: Scalars['ID'];
-  merchant: Scalars['String'];
+  orderId: Scalars['Bytes'];
+  merchantId: Scalars['Int'];
+  merchant: Merchant;
   payee: Scalars['String'];
   reviewAttestationId: Scalars['BigInt'];
   amount: Scalars['BigInt'];
@@ -377,6 +386,24 @@ export type Order_Filter = {
   id_lte?: InputMaybe<Scalars['ID']>;
   id_in?: InputMaybe<Array<Scalars['ID']>>;
   id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  orderId?: InputMaybe<Scalars['Bytes']>;
+  orderId_not?: InputMaybe<Scalars['Bytes']>;
+  orderId_gt?: InputMaybe<Scalars['Bytes']>;
+  orderId_lt?: InputMaybe<Scalars['Bytes']>;
+  orderId_gte?: InputMaybe<Scalars['Bytes']>;
+  orderId_lte?: InputMaybe<Scalars['Bytes']>;
+  orderId_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  orderId_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  orderId_contains?: InputMaybe<Scalars['Bytes']>;
+  orderId_not_contains?: InputMaybe<Scalars['Bytes']>;
+  merchantId?: InputMaybe<Scalars['Int']>;
+  merchantId_not?: InputMaybe<Scalars['Int']>;
+  merchantId_gt?: InputMaybe<Scalars['Int']>;
+  merchantId_lt?: InputMaybe<Scalars['Int']>;
+  merchantId_gte?: InputMaybe<Scalars['Int']>;
+  merchantId_lte?: InputMaybe<Scalars['Int']>;
+  merchantId_in?: InputMaybe<Array<Scalars['Int']>>;
+  merchantId_not_in?: InputMaybe<Array<Scalars['Int']>>;
   merchant?: InputMaybe<Scalars['String']>;
   merchant_not?: InputMaybe<Scalars['String']>;
   merchant_gt?: InputMaybe<Scalars['String']>;
@@ -397,6 +424,7 @@ export type Order_Filter = {
   merchant_ends_with_nocase?: InputMaybe<Scalars['String']>;
   merchant_not_ends_with?: InputMaybe<Scalars['String']>;
   merchant_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  merchant_?: InputMaybe<Merchant_Filter>;
   payee?: InputMaybe<Scalars['String']>;
   payee_not?: InputMaybe<Scalars['String']>;
   payee_gt?: InputMaybe<Scalars['String']>;
@@ -532,7 +560,16 @@ export type Order_Filter = {
 
 export enum Order_OrderBy {
   ID = 'id',
+  ORDERID = 'orderId',
+  MERCHANTID = 'merchantId',
   MERCHANT = 'merchant',
+  MERCHANT__ID = 'merchant__id',
+  MERCHANT__MERCHANTID = 'merchant__merchantId',
+  MERCHANT__ADDRESS = 'merchant__address',
+  MERCHANT__REVENUE = 'merchant__revenue',
+  MERCHANT__COMPLETEDORDERCOUNT = 'merchant__completedOrderCount',
+  MERCHANT__REVIEWEDORDERCOUNT = 'merchant__reviewedOrderCount',
+  MERCHANT__WITHDRAWN = 'merchant__withdrawn',
   PAYEE = 'payee',
   REVIEWATTESTATIONID = 'reviewAttestationId',
   AMOUNT = 'amount',
@@ -1245,44 +1282,104 @@ export enum _SubgraphErrorPolicy_ {
   DENY = 'deny'
 }
 
-export type MerchantsQueryVariables = Exact<{ [key: string]: never; }>;
+export type MerchantQueryVariables = Exact<{
+  merchantId: Scalars['ID'];
+}>;
 
 
-export type MerchantsQuery = { __typename?: 'Query', merchants: Array<{ __typename?: 'Merchant', id: string, revenue: any }> };
+export type MerchantQuery = { __typename?: 'Query', merchant?: { __typename?: 'Merchant', completedOrderCount: any, reviewedOrderCount: any, revenue: any, address: string, merchantId: number, id: string, withdrawn: any } | null };
+
+export type OrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export const MerchantsDocument = gql`
-    query Merchants {
-  merchants {
-    id
+export type OrdersQuery = { __typename?: 'Query', orders: Array<{ __typename?: 'Order', id: string, orderId: any, merchantId: number, payee: string, amount: any, settled: boolean, reviewAttestationId: any, createdTimestamp: any, reviewTx?: { __typename?: 'Transaction', id: string } | null, paymentTx?: { __typename?: 'Transaction', id: string } | null }> };
+
+
+export const MerchantDocument = gql`
+    query Merchant($merchantId: ID!) {
+  merchant(id: $merchantId) {
+    completedOrderCount
+    reviewedOrderCount
     revenue
+    address
+    merchantId
+    id
+    withdrawn
   }
 }
     `;
 
 /**
- * __useMerchantsQuery__
+ * __useMerchantQuery__
  *
- * To run a query within a React component, call `useMerchantsQuery` and pass it any options that fit your needs.
- * When your component renders, `useMerchantsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useMerchantQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMerchantQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useMerchantsQuery({
+ * const { data, loading, error } = useMerchantQuery({
+ *   variables: {
+ *      merchantId: // value for 'merchantId'
+ *   },
+ * });
+ */
+export function useMerchantQuery(baseOptions: Apollo.QueryHookOptions<MerchantQuery, MerchantQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MerchantQuery, MerchantQueryVariables>(MerchantDocument, options);
+      }
+export function useMerchantLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MerchantQuery, MerchantQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MerchantQuery, MerchantQueryVariables>(MerchantDocument, options);
+        }
+export type MerchantQueryHookResult = ReturnType<typeof useMerchantQuery>;
+export type MerchantLazyQueryHookResult = ReturnType<typeof useMerchantLazyQuery>;
+export type MerchantQueryResult = Apollo.QueryResult<MerchantQuery, MerchantQueryVariables>;
+export const OrdersDocument = gql`
+    query Orders {
+  orders {
+    id
+    orderId
+    merchantId
+    payee
+    amount
+    settled
+    reviewTx {
+      id
+    }
+    paymentTx {
+      id
+    }
+    reviewAttestationId
+    createdTimestamp
+  }
+}
+    `;
+
+/**
+ * __useOrdersQuery__
+ *
+ * To run a query within a React component, call `useOrdersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOrdersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOrdersQuery({
  *   variables: {
  *   },
  * });
  */
-export function useMerchantsQuery(baseOptions?: Apollo.QueryHookOptions<MerchantsQuery, MerchantsQueryVariables>) {
+export function useOrdersQuery(baseOptions?: Apollo.QueryHookOptions<OrdersQuery, OrdersQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MerchantsQuery, MerchantsQueryVariables>(MerchantsDocument, options);
+        return Apollo.useQuery<OrdersQuery, OrdersQueryVariables>(OrdersDocument, options);
       }
-export function useMerchantsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MerchantsQuery, MerchantsQueryVariables>) {
+export function useOrdersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OrdersQuery, OrdersQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MerchantsQuery, MerchantsQueryVariables>(MerchantsDocument, options);
+          return Apollo.useLazyQuery<OrdersQuery, OrdersQueryVariables>(OrdersDocument, options);
         }
-export type MerchantsQueryHookResult = ReturnType<typeof useMerchantsQuery>;
-export type MerchantsLazyQueryHookResult = ReturnType<typeof useMerchantsLazyQuery>;
-export type MerchantsQueryResult = Apollo.QueryResult<MerchantsQuery, MerchantsQueryVariables>;
+export type OrdersQueryHookResult = ReturnType<typeof useOrdersQuery>;
+export type OrdersLazyQueryHookResult = ReturnType<typeof useOrdersLazyQuery>;
+export type OrdersQueryResult = Apollo.QueryResult<OrdersQuery, OrdersQueryVariables>;

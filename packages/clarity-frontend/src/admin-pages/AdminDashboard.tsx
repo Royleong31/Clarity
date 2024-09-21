@@ -6,11 +6,11 @@ import { getReviews } from "../sign-protocol/getReviews";
 import { useEffect, useState } from "react";
 
 function AdminDashboard() {
-  const [reviews, setReviews] = useState([]);
-  useEffect(() => {
-    const res = getReviews();
-    setReviews(res);
-  }, []);
+  // const [reviews, setReviews] = useState([]);
+  // useEffect(() => {
+  //   const res = getReviews();
+  //   setReviews(res);
+  // }, []);
 
   // function calculateAverage(data) {
   //   if (data.length === 0) return 0; // Return 0 if the array is empty
