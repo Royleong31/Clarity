@@ -55,7 +55,6 @@
     "ethers": "^5.7.2",
     "input-otp": "^1.2.4",
     "lucide-react": "^0.441.0",
-    "namespace-sdk": "^1.1.18",
     "next-themes": "^0.3.0",
     "react": "^18.3.1",
     "react-day-picker": "8.10.1",
