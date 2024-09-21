@@ -23,6 +23,8 @@ interface RootState {
   orderId?: string;
   isOrderPaid?: boolean;
   isOrderReviewed?: boolean;
+  paymentTransactionHash?: string;
+  reviewTransactionHash?: string;
   price?: number;
   paymentSuccess: () => void;
   reviewSuccess: () => void;
@@ -104,12 +106,12 @@ export function AuthConsumer() {
     return <LoadingPage />;
   }
 
-  if (!isLoggedIn) {
-    return <WalletComponent />;
-  }
-
   if (!orderId) {
     return <CheckoutCard />;
+  }
+  
+  if (!isLoggedIn) {
+    return <WalletComponent />;
   }
 
   if (orderId && !paid) {

@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 const SIGN_PROTOCOL_TESTNET_URL_PREFIX = "https://testnet-rpc.sign.global/api";
 
 export async function getReviews() {
-  const API_URL = `${SIGN_PROTOCOL_TESTNET_URL_PREFIX}/index/attestations?schemaId=onchain_evm_11155111_0x24e`;
+  const API_URL = `${SIGN_PROTOCOL_TESTNET_URL_PREFIX}/index/attestations?schemaId=onchain_evm_11155111_0x25D`;
 
   const res = await axios.get(API_URL);
   // const { ratings, comment } = decodeClarityReview(

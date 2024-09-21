@@ -137,6 +137,7 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
       setRootState((prev) => ({
         ...prev,
         orderId: orderId,
+        paymentTransactionHash: transactionHash,
         attestationId: "123",
       }));
       onSuccess();
@@ -233,6 +234,7 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
             onClick={() => {
               paymentHandler();
             }}
+            disabled={loading}
           >
             {loading ? (
               <>
