@@ -37,12 +37,14 @@ import { useRootState } from "@/hooks/useRootState";
 import { clarityClient } from "../../../core/src/react-query/clarityClient";
 import Header from "./Header";
 import { get } from "lodash";
+import { useToast } from "@/hooks/use-toast";
 
 export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
   const { mutateAsync } = clarityClient.confirmOrderPayment.useMutation();
   const { rootState, setRootState } = useRootState();
   const [currency, setCurrency] =
     useState<keyof typeof currencyToAddress>("ETH");
+  const { toast } = useToast();
 
   const [amount, setAmount] = useState(0);
 
@@ -53,19 +55,20 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
   const [balance, setBalance] = useState("0");
   const [fetchingQuote, setFetchingQuote] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
 
   const currencyToAddress = {
     ETH: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
     USDC: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
     MATIC: "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
-    ONEINCH: "0x111111111117dC0aa78b770fA6A738034120C302"
+    ONEINCH: "0x111111111117dC0aa78b770fA6A738034120C302",
   };
 
   const testnetCurrencyToAddress = {
     USDC: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
     MATIC: "0x3fd0A53F4Bf853985a95F4Eb3F9C9FDE1F8e2b53",
-    ONEINCH: "0x111111111117dC0aa78b770fA6A738034120C302"
-  }
+    ONEINCH: "0x111111111117dC0aa78b770fA6A738034120C302",
+  };
 
   const currencyToDecimals = {
     ETH: 12,
@@ -146,6 +149,7 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
 
   const paymentHandler = async () => {
     console.log("paying");
+    // setError(null);
     setLoading(true);
     const tokenAddress = testnetCurrencyToAddress[currency];
     const txn1 = approve(tokenAddress, 1000000000);
@@ -156,34 +160,45 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
       setLoading(false);
       return;
     }
-    const txn2 = settlePaymentOnlyByBaseCurrencyTransaction(orderId);
-    console.log("txn 2", txn2);
-    if (smartWallet) {
-      console.log("wallet exists");
+    try {
+      const txn2 = settlePaymentOnlyByBaseCurrencyTransaction(orderId);
+      console.log("txn 2", txn2);
+      if (smartWallet) {
+        console.log("wallet exists");
 
-      const { wait, waitForTxHash } = await smartWallet.sendTransaction(
-        [txn1, txn2],
-        {
-          paymasterServiceData: {
-            mode: PaymasterMode.SPONSORED,
-          },
-          simulationType: "validation_and_execution",
-        }
-      );
-      console.log("sending txn 1");
-      const { reason } = await wait();
-      console.log("reason: ", reason);
-      const { transactionHash } = await waitForTxHash();
-      console.log(transactionHash);
-      await mutateAsync({ body: { orderId } });
+        const { wait, waitForTxHash } = await smartWallet.sendTransaction(
+          [txn1, txn2],
+          {
+            paymasterServiceData: {
+              mode: PaymasterMode.SPONSORED,
+            },
+            simulationType: "validation_and_execution",
+          }
+        );
+        console.log("sending txn 1");
+        const { reason } = await wait();
+        console.log("reason: ", reason);
+        const { transactionHash } = await waitForTxHash();
+        console.log(transactionHash);
+        await mutateAsync({ body: { orderId } });
+        setLoading(false);
+        setRootState((prev) => ({
+          ...prev,
+          orderId: orderId,
+          paymentTransactionHash: transactionHash,
+          attestationId: "123",
+        }));
+        onSuccess();
+      }
+    } catch (e) {
+      console.log("error", e);
       setLoading(false);
-      setRootState((prev) => ({
-        ...prev,
-        orderId: orderId,
-        paymentTransactionHash: transactionHash,
-        attestationId: "123",
-      }));
-      onSuccess();
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "There was something wrong with your request",
+      })
+      // setError(e);
     }
   };
 
