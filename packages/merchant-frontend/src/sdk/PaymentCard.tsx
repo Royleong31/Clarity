@@ -61,6 +61,12 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
     ONEINCH: "0x111111111117dC0aa78b770fA6A738034120C302"
   };
 
+  const testnetCurrencyToAddress = {
+    USDC: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+    MATIC: "0x3fd0A53F4Bf853985a95F4Eb3F9C9FDE1F8e2b53",
+    ONEINCH: "0x111111111117dC0aa78b770fA6A738034120C302"
+  }
+
   const currencyToDecimals = {
     ETH: 12,
     USDC: 6,
@@ -129,7 +135,7 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
         // setBalance(balances);
       } else {
         const balances = await smartWallet.getBalances([
-          currencyToAddress[currency],
+          testnetCurrencyToAddress[currency],
         ]);
         console.log(balances);
         setBalance(balances[0].formattedAmount);
@@ -141,7 +147,7 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
   const paymentHandler = async () => {
     console.log("paying");
     setLoading(true);
-    const tokenAddress = currencyToAddress[currency];
+    const tokenAddress = testnetCurrencyToAddress[currency];
     const txn1 = approve(tokenAddress, 1000000000);
     console.log("txn 1", txn1);
     const orderId = rootState.orderId;

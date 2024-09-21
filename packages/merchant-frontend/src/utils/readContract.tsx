@@ -17,7 +17,7 @@ export const isOrderReviewed = async (orderId: string) => {
     "function isOrderReviewed(string memory rawOrderId) external view returns (bool reviewed)",
   ];
 
-  const provider = new ethers.JsonRpcProvider(`https://rpc2.sepolia.org`);
+  const provider = new ethers.JsonRpcProvider(`https://sepolia.base.org`);
 
   //   const provider = evmProviders.getProviderByChainId(ChainId.SEPOLIA)
   // Create a contract instance
@@ -38,7 +38,7 @@ export const isOrderPaid = async (orderId: string) => {
     "function isOrderSettled(string calldata rawOrderId) external view returns (bool settled)",
   ];
 
-  const provider = new ethers.JsonRpcProvider(`https://rpc2.sepolia.org`);
+  const provider = new ethers.JsonRpcProvider(`https://base-sepolia-rpc.publicnode.com	`);
 
   // Create a contract instance
   const contract = new ethers.Contract(contractAddress, contractABI, provider!);

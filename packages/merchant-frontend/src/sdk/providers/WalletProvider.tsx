@@ -103,7 +103,7 @@ const SmartWalletProvider = ({ children }: { children: ReactNode }) => {
   const embeddedWallet: Wallet<any> | undefined = userWallets.find(
     (wallet) => wallet.connector?.isEmbeddedWallet === true
   );
-  const chainId = ChainId.SEPOLIA;
+  const chainId = 84532;
   console.log("Embedded wallet:", embeddedWallet);
   const [smartWallet, setSmartWallet] = useState<BiconomySmartAccountV2>();
 
@@ -117,7 +117,7 @@ const SmartWalletProvider = ({ children }: { children: ReactNode }) => {
         chainId: chainId, // Replace this with your desired network
         entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS, // This is a Biconomy constant
         userOpReceiptMaxDurationIntervals: {
-          [ChainId.SEPOLIA]: 120000,
+          [chainId]: 120000,
         },
       });
 
