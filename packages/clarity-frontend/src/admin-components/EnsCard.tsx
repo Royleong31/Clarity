@@ -36,7 +36,6 @@ function EnsCard({ onComplete }: { onComplete: (val: string) => void }) {
                         hasHeader={false}
 
                     />
-                    <p>status: {status}</p>
                 </div>
             </CardContent>
         </Card>

@@ -1,6 +1,11 @@
-query Merchants {
-  merchants {
-    id
+query Merchant($merchantId: ID!) {
+  merchant(id: $merchantId) {
+    completedOrderCount
+    reviewedOrderCount
     revenue
+    address
+    merchantId
+    id
+    withdrawn
   }
 }
