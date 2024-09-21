@@ -7,6 +7,7 @@ import ReviewCompletedCard from "./ReviewCompletedCard";
 import LoadingPage from "@/pages/LoadingPage";
 import { useRootState } from "@/hooks/useRootState";
 import CheckoutCard from "./CheckoutCard";
+import { isOrderPaid, isOrderReviewed } from "@/utils/readContract";
 
 interface RootContextType {
   rootState: RootState;
@@ -14,15 +15,18 @@ interface RootContextType {
 }
 
 // Create the context
-export const RootContext = createContext<RootContextType | undefined>(undefined);
+export const RootContext = createContext<RootContextType | undefined>(
+  undefined
+);
 
 interface RootState {
   orderId?: string;
-  attestationId?: string;
+  isOrderPaid?: boolean;
+  isOrderReviewed?: boolean;
   price?: number;
   paymentSuccess: () => void;
   reviewSuccess: () => void;
-} 
+}
 
 const ClarityRootComponent = ({
   orderId,
@@ -33,9 +37,9 @@ const ClarityRootComponent = ({
     orderId,
     paymentSuccess,
     reviewSuccess,
-    attestationId: ''
+    isOrderReviewed: false,
   });
-  
+
   useEffect(() => {
     setRootState((prevState) => ({
       ...prevState,
@@ -60,8 +64,39 @@ export function AuthConsumer() {
   const isLoggedIn = useIsLoggedIn();
   const { sdkHasLoaded } = useDynamicContext();
 
-  const { rootState } = useRootState();
-  const { orderId, attestationId, paymentSuccess, reviewSuccess } = rootState;
+  const { rootState, setRootState } = useRootState();
+  const {
+    orderId,
+    isOrderPaid: paid,
+    isOrderReviewed: reviewed,
+    paymentSuccess,
+    reviewSuccess,
+  } = rootState;
+
+  useEffect(() => {
+    // console.log("Root state", rootState);
+    const read = async () => {
+      if (orderId) {
+        const paid = await isOrderPaid(orderId);
+        // Check whether review has been reviewed
+        const reviewed = await isOrderReviewed(orderId);
+
+        if (
+          !(
+            paid === rootState.isOrderPaid &&
+            reviewed === rootState.isOrderReviewed
+          )
+        ) {
+          setRootState((prevState) => ({
+            ...prevState,
+            isOrderPaid: paid,
+            isOrderReviewed: reviewed,
+          }));
+        }
+      }
+    };
+    read();
+  }, [rootState]);
 
   //TODO use orderId to query for review attestation, setReviewed to true if attestation found, setRootState
 
@@ -77,11 +112,12 @@ export function AuthConsumer() {
     return <CheckoutCard />;
   }
 
-  if (orderId) {
+  if (orderId && !paid) {
+    // Temporary attestation id, use something else later
     return <PaymentCard onSuccess={paymentSuccess} />; // Here, set order id when done
   }
 
-  if (!attestationId) {
+  if (!reviewed) {
     return <PaymentCompletedCard onSuccess={reviewSuccess} />;
   }
 

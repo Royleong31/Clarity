@@ -16,19 +16,27 @@ import {
   ISuccessResult,
 } from "@worldcoin/idkit";
 import { useRootState } from "@/hooks/useRootState";
+import { PaymasterMode } from "@biconomy/account";
+import { useSmartWallet } from "@/hooks/useSmartWallet";
 
 interface PaymentCompletedCardProps {
   onSuccess: () => void;
 }
 
 import axios from "axios";
+import {
+  encodeClarityReview,
+  encodeWorldcoinProof,
+  reviewTransaction,
+} from "@/utils/contractFunctions";
 
 const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
   onSuccess,
 }) => {
   const [rating, setRating] = useState(0);
   const [comments, setComments] = useState("");
-  const { setRootState } = useRootState();
+  const { rootState, setRootState } = useRootState();
+  const smartWallet = useSmartWallet();
 
   const handleVerify = async (result: ISuccessResult) => {
     // TODO call backend to verify the proof
@@ -45,9 +53,46 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
     console.log("proof verified", res);
   };
 
-  const onWIDSuccess = (result: ISuccessResult) => {
-    console.log("proof verified, sending review", result);
+  const onWIDSuccess = async () => {
+    // const onWIDSuccess = async (result: ISuccessResult) => {
+    // console.log("proof verified, sending review", result);
     //TODO interact with contract to attest review
+    const reviewData = encodeClarityReview(rating, comments);
+    console.log("review data", reviewData);
+    const encodedProof = encodeWorldcoinProof("test", "test", "test", "test");
+
+    // const orderId = "8d96e941-4029-4ee2-8f0a-5bf7dfd4f4cc"
+    const orderId = rootState.orderId;
+    if (!orderId) {
+      throw new Error("Order ID not found");
+    }
+
+    const transaction = reviewTransaction(
+      orderId,
+      reviewData,
+      encodedProof
+    );
+
+    console.log("review transaction", transaction);
+
+    if (!smartWallet) {
+      throw new Error("Smart wallet not found");
+    }
+    const { wait, waitForTxHash } = await smartWallet.sendTransaction(
+      transaction,
+      {
+        paymasterServiceData: {
+          mode: PaymasterMode.SPONSORED,
+        },
+        simulationType: "validation_and_execution",
+      }
+    );
+    console.log("sending txn 1");
+    const { reason } = await wait();
+    console.log("reason: ", reason);
+    const { transactionHash } = await waitForTxHash();
+    console.log(transactionHash);
+
     setRootState((prev) => ({ ...prev, attestationId: "1234" }));
 
     onSuccess(); // Call the onSuccess prop function
@@ -94,6 +139,9 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
               </div>
             </div>
           </form>
+          {/* <Button className="w-full mt-2" onClick={onWIDSuccess}>
+            Verify with World ID
+          </Button> */}
           <IDKitWidget
             app_id={import.meta.env.VITE_WID} // obtained from the Developer Portal
             action="review" // obtained from the Developer Portal

@@ -1,6 +1,7 @@
 import { encodeFunctionData, parseAbi } from "viem";
+import { ethers } from "ethers";
 
-const SEPOLIA_MAIN_CONTRACT = "0x479eE4d9BF5109bF6d55211871BE775C2e95eE58";
+const SEPOLIA_MAIN_CONTRACT = "0x1aa205ea73e9df203ad794f295b488ef97bfd434";
 
 export const settlePaymentOnlyByBaseCurrencyTransaction = (orderId: string) => {
   console.log("calling pay function");
@@ -29,6 +30,116 @@ export const approve = (tokenAddress: string, amount: number) => {
       ]),
       functionName: "approve",
       args: [SEPOLIA_MAIN_CONTRACT, BigInt(amount)],
+    }),
+  };
+};
+
+export function encodeClarityReview(ratings: number, comment: string): string {
+  const REVIEW_TYPES = ["uint256", "string"];
+
+  return ethers.AbiCoder.defaultAbiCoder().encode(REVIEW_TYPES, [
+    ratings,
+    comment,
+  ]);
+}
+
+export function encodeWorldcoinProof(
+  signal: string,
+  root: string,
+  nullifierHash: string,
+  proof: string
+): string {
+  const newSignal = "0x1234567890123456789012345678901234567890"; // Example address for signal
+  // const newRoot = "1234567"; // Example uint256 for root
+  // const newNullifierHash = "12345"; // Example uint256 for nullifierHash
+  const newRoot =
+    "1234567890123456789012345678901234567890123456789012345678901234"; // Example uint256 for root
+  const newNullifierHash =
+    "1234567890123456789012345678901234567890123456789012345678901234"; // Example uint256 for nullifierHash
+
+  // const newProof = [
+  //   "1234567890123456789012345678901234567890123456789012345678901234",
+  //   "1234567890123456789012345678901234567890123456789012345678901234",
+  //   "1234567890123456789012345678901234567890123456789012345678901234",
+  //   "1234567890123456789012345678901234567890123456789012345678901234",
+  //   "1234567890123456789012345678901234567890123456789012345678901234",
+  //   "1234567890123456789012345678901234567890123456789012345678901234",
+  //   "1234567890123456789012345678901234567890123456789012345678901234",
+  //   "1234567890123456789012345678901234567890123456789012345678901234",
+  // ]; // Example uint256[8] for proof
+  const newProof = [
+    "1",
+    "1",
+    "1",
+    "1",
+    "1",
+    "1",
+    "1",
+    "1",
+  ]; // Example uint256[8] for proof
+
+  // const newRoot = BigInt(
+  //   "1234567890123456789012345678901234567890123456789012345678901234"
+  // ); // Example uint256 for root
+  // const newNullifierHash = BigInt(
+  //   "1234567890123456789012345678901234567890123456789012345678901234"
+  // ); // Example uint256 for nullifierHash
+
+  // const test = BigInt("1234567890123456789012345678901234567890123456789012345678901234")
+  // const newProof = [
+  //   test,
+  //   test,
+  //   test,
+  //   test,
+  //   test,
+  //   test,
+  //   test,
+  //   test,
+  // ]; // Example uint256[8] for proof
+
+  // const newProof = [
+  //   "123",
+  //   "123",
+  //   "123",
+  //   "123",
+  //   "123",
+  //   "123",
+  //   "123",
+  //   "123",
+  // ]; // Example uint256[8] for proof
+  const types = [
+    "address", // signal
+    "uint256", // root
+    "uint256", // nullifierHash
+    "uint256[8]", // proof
+  ];
+
+  return ethers.AbiCoder.defaultAbiCoder().encode(types, [
+    newSignal,
+    newRoot,
+    newNullifierHash,
+    newProof,
+  ]);
+}
+
+export const reviewTransaction = (
+  orderId: string,
+  data: `0x{string}`,
+  encodedProof: `0x{string}`
+) => {
+  console.log("approving token");
+  console.log("order id", orderId);
+  console.log("data: ", data);
+  console.log("encodedProof: ", encodedProof);
+
+  return {
+    to: SEPOLIA_MAIN_CONTRACT,
+    data: encodeFunctionData({
+      abi: parseAbi([
+        "function attestReview(string memory rawOrderId, bytes calldata data, bytes calldata encodedProof) external",
+      ]),
+      functionName: "attestReview",
+      args: [orderId, data, encodedProof],
     }),
   };
 };

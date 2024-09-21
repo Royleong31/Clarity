@@ -38,7 +38,7 @@ import { clarityClient } from "../../../core/src/react-query/clarityClient";
 
 export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
   const { mutateAsync } = clarityClient.confirmOrderPayment.useMutation();
-  const { rootState } = useRootState();
+  const { rootState, setRootState } = useRootState();
   const [currency, setCurrency] =
     useState<keyof typeof currencyToAddress>("ETH");
 
@@ -133,6 +133,11 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
       console.log(transactionHash);
       await mutateAsync({ body: { orderId } });
       setLoading(false);
+      setRootState((prev) => ({
+        ...prev,
+        orderId: orderId,
+        attestationId: "123",
+      }));
       onSuccess();
     }
   };

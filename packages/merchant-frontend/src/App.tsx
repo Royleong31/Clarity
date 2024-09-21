@@ -15,7 +15,8 @@ const router = createBrowserRouter([
     // element: <PaymentPage />,
     element: (
       <ClarityRootComponent
-        orderId=""
+        // orderId="8d96e941-4029-4ee2-8f0a-5bf7dfd4f4cc"
+        // attestationId="123123"
         paymentSuccess={() => {
           console.log("payment success");
         }}

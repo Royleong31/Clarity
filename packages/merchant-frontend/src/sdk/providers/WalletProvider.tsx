@@ -11,9 +11,16 @@ import {
 
   // SdkViewSectionType, SdkViewType
 } from "@dynamic-labs/sdk-react-core";
-import { isEthereumWallet, EthereumWalletConnectors } from "@dynamic-labs/ethereum";
+import {
+  isEthereumWallet,
+  EthereumWalletConnectors,
+} from "@dynamic-labs/ethereum";
 import { getSigner } from "@dynamic-labs/ethers-v6";
-import { SdkViewSectionType, SdkViewType, SdkViewSectionAlignment } from "@dynamic-labs/sdk-api";
+import {
+  SdkViewSectionType,
+  SdkViewType,
+  SdkViewSectionAlignment,
+} from "@dynamic-labs/sdk-api";
 
 // Biconomy
 import { ChainId } from "@biconomy/core-types";
@@ -32,7 +39,9 @@ import {
 export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const environmentId = import.meta.env.VITE_DYNAMIC_ENV_ID;
   if (!environmentId) {
-    throw new Error("Missing VITE_DYNAMIC_ENV_ID in .env, ask Ivan for .env file");
+    throw new Error(
+      "Missing VITE_DYNAMIC_ENV_ID in .env, ask Ivan for .env file"
+    );
   }
 
   const locale = {
@@ -84,7 +93,9 @@ export const WalletProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const SmartWalletContext = createContext<BiconomySmartAccountV2 | undefined>(undefined);
+export const SmartWalletContext = createContext<
+  BiconomySmartAccountV2 | undefined
+>(undefined);
 
 const SmartWalletProvider = ({ children }: { children: ReactNode }) => {
   const userWallets = useUserWallets();
@@ -105,6 +116,9 @@ const SmartWalletProvider = ({ children }: { children: ReactNode }) => {
         bundlerUrl: `https://bundler.biconomy.io/api/v2/${chainId}/${bundlerKey}`,
         chainId: chainId, // Replace this with your desired network
         entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS, // This is a Biconomy constant
+        userOpReceiptMaxDurationIntervals: {
+          [ChainId.SEPOLIA]: 120000,
+        },
       });
 
       // Initialize your paymaster
@@ -142,14 +156,20 @@ const SmartWalletProvider = ({ children }: { children: ReactNode }) => {
         activeValidationModule: validationModule, // Use the `validationModule` we initialized above
       };
 
-      const smartAccount = await BiconomySmartAccountV2.create(smartAccountConfig);
+      const smartAccount = await BiconomySmartAccountV2.create(
+        smartAccountConfig
+      );
 
       setSmartWallet(smartAccount);
       console.log("Set smart account", smartAccount);
     };
     initBiconomy();
   }, [embeddedWallet]);
-  return <SmartWalletContext.Provider value={smartWallet}>{children}</SmartWalletContext.Provider>;
+  return (
+    <SmartWalletContext.Provider value={smartWallet}>
+      {children}
+    </SmartWalletContext.Provider>
+  );
 };
 // const properties = {
 //   // width: "100%",
