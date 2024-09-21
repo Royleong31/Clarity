@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button";
 import { useRootState } from "@/hooks/useRootState";
 
 export default function ReviewCompletedCard() {
-  const { rootState } = useRootState();
+  const { rootState, setRootState } = useRootState();
+
   return (
     <>
       <Header />
@@ -26,7 +27,10 @@ export default function ReviewCompletedCard() {
             rel="noopener noreferrer"
             className="text-xs flex items-center w-full justify-between border border-black rounded-lg px-2 py-1"
           >
-            {rootState.reviewTransactionHash} <ExternalLinkIcon className="w-4" />
+            <p className="text-ellipsis overflow-hidden">
+              {rootState.reviewTransactionHash}{" "}
+            </p>
+            <ExternalLinkIcon className="w-4" />
           </a>
           <div className="text-xs text-grey-400 flex items-center mt-2">
             <CircleAlertIcon className="w-4 mr-1 inline-block " />
