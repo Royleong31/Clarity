@@ -8,10 +8,9 @@ import { clarityQueryClient } from "../../core/src/react-query/clarityClient.ts"
 import { merchantQueryClient } from "../../core/src/react-query/merchantClient.ts";
 
 const client = new ApolloClient({
-  uri: "https://api.studio.thegraph.com/query/46716/clarity-test/v0.1.4",
+  uri: "https://api.studio.thegraph.com/query/46716/clarity-test/v0.1.6",
   cache: new InMemoryCache(),
 });
-
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
