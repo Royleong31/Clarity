@@ -25,7 +25,7 @@ function App() {
       <Routes>
         {/* Route for Admin Dashboard */}
         <Route path="/adminsignup" element={<AdminSignup />} />
-        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/" element={<AdminDashboard />} />
         {/* Default route showing 'Hello world' */}
         <Route
           path="/"
