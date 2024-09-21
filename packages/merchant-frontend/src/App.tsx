@@ -4,10 +4,16 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 // import PaymentPage from "./pages/PaymentPage";
 import ErrorPage from "./pages/ErrorPage";
 import ClarityRootComponent from "./sdk/ClarityRootComponent";
+import ProfileCard from "./sdk/ProfileCard";
 const router = createBrowserRouter([
   {
     path: "*",
     element: <ErrorPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/profile",
+    element: <ProfileCard />,
     errorElement: <ErrorPage />,
   },
   {

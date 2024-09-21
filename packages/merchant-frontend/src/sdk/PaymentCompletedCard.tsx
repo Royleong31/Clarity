@@ -5,6 +5,7 @@ import {
   ExternalLinkIcon,
   CircleAlertIcon,
   BadgeCheckIcon,
+  Loader2,
 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import StarRating from "./Ratings";
@@ -29,6 +30,7 @@ import {
   encodeWorldcoinProof,
   reviewTransaction,
 } from "@/utils/contractFunctions";
+import { root } from "viem/chains";
 
 const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
   onSuccess,
@@ -37,10 +39,12 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
   const [comments, setComments] = useState("");
   const { rootState, setRootState } = useRootState();
   const smartWallet = useSmartWallet();
+  const [loading, setLoading] = useState(false);
 
   const handleVerify = async (result: ISuccessResult) => {
     // TODO call backend to verify the proof
     console.log("verifying proof", result);
+    setLoading(true);
     const res = await axios.get(
       import.meta.env.VITE_PUBLIC_CLARITY_API_URL +
         "/verify-world-id-proof?proof=" +
@@ -50,6 +54,11 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
         "&nullifierHash=" +
         result.nullifier_hash
     );
+    localStorage.setItem("nullifierHash", result.nullifier_hash);
+    setRootState((prev) => ({
+      ...prev,
+      nullifierHash: result.nullifier_hash,
+    }));
     console.log("proof verified", res);
   };
 
@@ -64,6 +73,7 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
     // const orderId = "8d96e941-4029-4ee2-8f0a-5bf7dfd4f4cc"
     const orderId = rootState.orderId;
     if (!orderId) {
+      setLoading(false);
       throw new Error("Order ID not found");
     }
 
@@ -72,6 +82,7 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
     console.log("review transaction", transaction);
 
     if (!smartWallet) {
+      setLoading(false);
       throw new Error("Smart wallet not found");
     }
     const { wait, waitForTxHash } = await smartWallet.sendTransaction(
@@ -84,14 +95,23 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
       }
     );
     console.log("sending txn 1");
-    const { reason } = await wait();
-    console.log("reason: ", reason);
-    const { transactionHash } = await waitForTxHash();
-    console.log(transactionHash);
-
-    setRootState((prev) => ({ ...prev, attestationId: "1234" }));
-
-    onSuccess(); // Call the onSuccess prop function
+    try {
+      const { reason } = await wait();
+      console.log("reason: ", reason);
+      const { transactionHash } = await waitForTxHash();
+      console.log(transactionHash);
+      setRootState((prev) => ({
+        ...prev,
+        attestationId: "1234",
+        isOrderReviewed: true,
+        paymentTransactionHash: transactionHash,
+      }));
+      setLoading(false);
+      onSuccess(); // Call the onSuccess prop function
+    } catch (e) {
+      console.error("Error sending transaction", e);
+      setLoading(false);
+    }
   };
 
   return (
@@ -104,12 +124,16 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
         <Separator className="mb-4" />
         <div className="text-xs mb-2">Transaction Hash:</div>
         <a
-          href="https://www.google.com"
+          href={`https://sepolia.etherscan.io/tx/${rootState.paymentTransactionHash}`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-xs flex items-center w-full justify-between border border-black rounded-lg px-2 py-1"
         >
-          0x2133423492489339430434 <ExternalLinkIcon className="w-4" />
+          <p className="text-ellipsis overflow-hidden">
+            {rootState.paymentTransactionHash}{" "}
+          </p>
+
+          <ExternalLinkIcon className="w-4" />
         </a>
         <div className="text-xs text-grey-400 flex items-center mt-2">
           <CircleAlertIcon className="w-4 mr-1 inline-block " />
@@ -134,6 +158,10 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
                 />
               </div>
             </div>
+            <div className="text-xs text-grey-400 flex items-center mt-2">
+              <CircleAlertIcon className="w-4 mr-1 inline-block " />
+              Leaving a review earns you a Clarity Token.
+            </div>
           </form>
           {/* <Button className="w-full mt-2" onClick={onWIDSuccess}>
             Verify with World ID
@@ -147,8 +175,12 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
           >
             {({ open }) => (
               // This is the button that will open the IDKit modal
-              <Button className="w-full mt-2" onClick={open}>
-                Verify with World ID
+              <Button className="w-full mt-2" onClick={open} disabled={loading}>
+                {loading ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  <>Verify with World ID</>
+                )}
               </Button>
             )}
           </IDKitWidget>

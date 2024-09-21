@@ -1,7 +1,8 @@
 import { encodeFunctionData, parseAbi } from "viem";
 import { ethers } from "ethers";
+import { CONTRACT_ADDRESS } from "./Constants";
 
-const SEPOLIA_MAIN_CONTRACT = "0x1aa205ea73e9df203ad794f295b488ef97bfd434";
+const SEPOLIA_MAIN_CONTRACT = CONTRACT_ADDRESS;
 
 export const settlePaymentOnlyByBaseCurrencyTransaction = (orderId: string) => {
   console.log("calling pay function");
@@ -50,63 +51,13 @@ export function encodeWorldcoinProof(
   proof: string
 ): string {
   const newSignal = "0x1234567890123456789012345678901234567890"; // Example address for signal
-  // const newRoot = "1234567"; // Example uint256 for root
-  // const newNullifierHash = "12345"; // Example uint256 for nullifierHash
+
   const newRoot =
     "1234567890123456789012345678901234567890123456789012345678901234"; // Example uint256 for root
   const newNullifierHash =
     "1234567890123456789012345678901234567890123456789012345678901234"; // Example uint256 for nullifierHash
 
-  // const newProof = [
-  //   "1234567890123456789012345678901234567890123456789012345678901234",
-  //   "1234567890123456789012345678901234567890123456789012345678901234",
-  //   "1234567890123456789012345678901234567890123456789012345678901234",
-  //   "1234567890123456789012345678901234567890123456789012345678901234",
-  //   "1234567890123456789012345678901234567890123456789012345678901234",
-  //   "1234567890123456789012345678901234567890123456789012345678901234",
-  //   "1234567890123456789012345678901234567890123456789012345678901234",
-  //   "1234567890123456789012345678901234567890123456789012345678901234",
-  // ]; // Example uint256[8] for proof
-  const newProof = [
-    "1",
-    "1",
-    "1",
-    "1",
-    "1",
-    "1",
-    "1",
-    "1",
-  ]; // Example uint256[8] for proof
-
-  // const newRoot = BigInt(
-  //   "1234567890123456789012345678901234567890123456789012345678901234"
-  // ); // Example uint256 for root
-  // const newNullifierHash = BigInt(
-  //   "1234567890123456789012345678901234567890123456789012345678901234"
-  // ); // Example uint256 for nullifierHash
-
-  // const test = BigInt("1234567890123456789012345678901234567890123456789012345678901234")
-  // const newProof = [
-  //   test,
-  //   test,
-  //   test,
-  //   test,
-  //   test,
-  //   test,
-  //   test,
-  //   test,
-  // ]; // Example uint256[8] for proof
-
-  // const newProof = [
-  //   "123",
-  //   "123",
-  //   "123",
-  //   "123",
-  //   "123",
-  //   "123",
-  //   "123",
-  //   "123",
-  // ]; // Example uint256[8] for proof
+  const newProof = ["1", "1", "1", "1", "1", "1", "1", "1"];
   const types = [
     "address", // signal
     "uint256", // root
