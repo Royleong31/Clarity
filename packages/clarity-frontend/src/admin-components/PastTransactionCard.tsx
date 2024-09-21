@@ -143,7 +143,7 @@ const Transaction = ({
 };
 
 function PastTransactionCard() {
-  const { data: ordersData } = useOrdersQuery();
+  const { data: ordersData } = useOrdersQuery({ variables: { where: { merchantId: 1 } } });
 
   console.log(ordersData);
   const addresses = ordersData?.orders.map((order) => order.payee) ?? [];
