@@ -1,21 +1,12 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import {
-  ExternalLinkIcon,
-  CircleAlertIcon,
-  BadgeCheckIcon,
-  Loader2,
-} from "lucide-react";
+import { ExternalLinkIcon, CircleAlertIcon, BadgeCheckIcon, Loader2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import StarRating from "./Ratings";
 import { Label } from "@radix-ui/react-label";
 import { Button } from "@/components/ui/button";
-import {
-  IDKitWidget,
-  VerificationLevel,
-  ISuccessResult,
-} from "@worldcoin/idkit";
+import { IDKitWidget, VerificationLevel, ISuccessResult } from "@worldcoin/idkit";
 import { useRootState } from "@/hooks/useRootState";
 import { PaymasterMode } from "@biconomy/account";
 import { useSmartWallet } from "@/hooks/useSmartWallet";
@@ -32,9 +23,7 @@ import {
 } from "@/utils/contractFunctions";
 import { root } from "viem/chains";
 
-const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
-  onSuccess,
-}) => {
+const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({ onSuccess }) => {
   const [rating, setRating] = useState(0);
   const [comments, setComments] = useState("");
   const { rootState, setRootState } = useRootState();
@@ -85,15 +74,12 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
       setLoading(false);
       throw new Error("Smart wallet not found");
     }
-    const { wait, waitForTxHash } = await smartWallet.sendTransaction(
-      transaction,
-      {
-        paymasterServiceData: {
-          mode: PaymasterMode.SPONSORED,
-        },
-        simulationType: "validation_and_execution",
-      }
-    );
+    const { wait, waitForTxHash } = await smartWallet.sendTransaction(transaction, {
+      paymasterServiceData: {
+        mode: PaymasterMode.SPONSORED,
+      },
+      simulationType: "validation_and_execution",
+    });
     console.log("sending txn 1");
     try {
       const { reason } = await wait();
@@ -124,14 +110,12 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
         <Separator className="mb-4" />
         <div className="text-xs mb-2">Transaction Hash:</div>
         <a
-          href={`https://sepolia.etherscan.io/tx/${rootState.paymentTransactionHash}`}
+          href={`https://sepolia.basescan.org/tx/${rootState.paymentTransactionHash}`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-xs flex items-center w-full justify-between border border-black rounded-lg px-2 py-1"
         >
-          <p className="text-ellipsis overflow-hidden">
-            {rootState.paymentTransactionHash}{" "}
-          </p>
+          <p className="text-ellipsis overflow-hidden">{rootState.paymentTransactionHash} </p>
 
           <ExternalLinkIcon className="w-4" />
         </a>
@@ -176,11 +160,7 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
             {({ open }) => (
               // This is the button that will open the IDKit modal
               <Button className="w-full mt-2" onClick={open} disabled={loading}>
-                {loading ? (
-                  <Loader2 className="animate-spin" />
-                ) : (
-                  <>Verify with World ID</>
-                )}
+                {loading ? <Loader2 className="animate-spin" /> : <>Verify with World ID</>}
               </Button>
             )}
           </IDKitWidget>

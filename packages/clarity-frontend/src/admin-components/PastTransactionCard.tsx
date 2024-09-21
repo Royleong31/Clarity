@@ -77,7 +77,7 @@ const Transaction = ({
           <img className="h-12 w-auto" src={`/images/nouns/${profilePic}`} alt="profileimage" />
           <div className="font-medium ml-2 flex justify-start">
             <a
-              href={`https://sepolia.etherscan.io/address/${payee}`}
+              href={`https://sepolia.basescan.org/address/${payee}`}
               target="_blank"
               rel="noopener noreferrer"
               className={`text-black ${
@@ -104,7 +104,7 @@ const Transaction = ({
               <>
                 <strong>Payment: </strong>
                 <a
-                  href={`https://sepolia.etherscan.io/tx/${paymentHash}`}
+                  href={`https://sepolia.basescan.org/tx/${paymentHash}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-black underline flex items-center"
@@ -123,7 +123,7 @@ const Transaction = ({
               <>
                 <strong>Review: </strong>
                 <a
-                  href={`https://sepolia.etherscan.io/tx/${reviewHash}`}
+                  href={`https://sepolia.basescan.org/tx/${reviewHash}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-black underline flex items-center"
