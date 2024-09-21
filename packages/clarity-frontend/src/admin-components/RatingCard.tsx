@@ -7,7 +7,7 @@ import {
 
 function RatingCard({ rating }: { rating: number }) {
   // average rating
-  const stars = Array(5).fill(0); // Create an array of 5 elements for stars
+  const stars = Array(rating).fill(0); // Create an array of 5 elements for stars
 
   return (
     <Card>
