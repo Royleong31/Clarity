@@ -58,7 +58,7 @@ export function AuthConsumer() {
   const isLoggedIn = useIsLoggedIn();
   const { sdkHasLoaded } = useDynamicContext();
 
-  const { rootState, setRootState } = useRootState();
+  const { rootState } = useRootState();
   const { orderId, attestationId, paymentSuccess, reviewSuccess } = rootState;
 
   //TODO use orderId to query for review attestation, setReviewed to true if attestation found, setRootState

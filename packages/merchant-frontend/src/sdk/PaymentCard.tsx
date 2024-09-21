@@ -1,4 +1,4 @@
-import { CircleAlertIcon, Trash, Loader2 } from "lucide-react";
+import { CircleAlertIcon, Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -31,10 +31,7 @@ import {
 import { PaymasterMode } from "@biconomy/account";
 
 import { getPrice } from "@/utils/1inchCalls";
-import { setPriority } from "os";
-import { set } from "lodash";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useRootState } from "@/hooks/useRootState";
 
 export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
   const [currency, setCurrency] =
@@ -45,8 +42,9 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
   const { openFunding } = useFunding();
 
   const smartWallet = useSmartWallet();
+
+  const [balance, setBalance] = useState("0");
   const [fetchingQuote, setFetchingQuote] = useState(false);
-  const { setRootState } = useRootState();
   const [loading, setLoading] = useState(false);
 
   const currencyToAddress = {
@@ -72,14 +70,36 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
 
   useEffect(() => {
     console.log("fetching new quote");
+    getBalance();
     getQuote();
   }, [currency]);
 
+  const [fetchingBalance, setFetchingBalance] = useState(false);
+
+  const getBalance = async () => {
+    setFetchingBalance(true);
+    if (smartWallet) {
+      // console.log(balances[0].formattedAmount);
+      
+      if (currency === "ETH") {
+        const balances = await smartWallet.getBalances([]);
+        console.log(balances[0].formattedAmount);
+        setBalance(balances[0].formattedAmount);
+        // setBalance(balances);
+      } else {
+        const balances = await smartWallet.getBalances([
+          currencyToAddress[currency],
+        ]);
+        console.log(balances)
+        setBalance(balances[0].formattedAmount);
+      }
+    }
+    setFetchingBalance(false);
+  };
+
   const paymentHandler = async () => {
     console.log("paying");
-    setLoading((prevState) => {
-      return true;
-    });
+    setLoading(true);
     const tokenAddress = currencyToAddress[currency];
     const txn1 = approve(tokenAddress, 1000000000);
     console.log("txn 1", txn1);
@@ -109,18 +129,14 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
       const { transactionHash } = await waitForTxHash();
       console.log(transactionHash);
       setLoading(false);
-      setRootState((prevState) => ({
-        ...prevState,
-        orderId: orderId,
-      }));
-      
+      onSuccess();
     }
   };
 
   const handleOnRamp = async () => {
     await openFunding({
       token: "USDT",
-      address: smartWallet?.accountAddress,
+      address: await smartWallet?.getAccountAddress(),
     });
   };
 
@@ -151,7 +167,10 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
 
             <div className="flex flex-col space-y-1.5 w-full">
               <Label htmlFor="framework">Pay With</Label>
-              <Select defaultValue="ETH" onValueChange={(e) => setCurrency(e)}>
+              <Select
+                defaultValue="ETH"
+                onValueChange={(e: "ETH" | "BTC" | "USDc") => setCurrency(e)}
+              >
                 <SelectTrigger id="framework">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
@@ -162,7 +181,13 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
                 </SelectContent>
               </Select>
               <div className="text-xs flex justify-between">
-                <div>Balance: 30{currency}</div>
+                {fetchingBalance ? (
+                  "Loading"
+                ) : (
+                  <div>
+                    Balance: {balance} {currency}
+                  </div>
+                )}
                 <div
                   className="text-blue-700 underline underline-offset-2 cursor-pointer"
                   onClick={handleOnRamp}
