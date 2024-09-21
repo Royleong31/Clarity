@@ -35,6 +35,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useRootState } from "@/hooks/useRootState";
 
 import { clarityClient } from "../../../core/src/react-query/clarityClient";
+import Header from "./Header";
 
 export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
   const { mutateAsync } = clarityClient.confirmOrderPayment.useMutation();
@@ -176,47 +177,48 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
                 <DynamicWidget />
               </div>
 
-            <div className="flex flex-col space-y-1.5 w-full">
-              <Label htmlFor="framework">Pay With</Label>
-              <Select
-                defaultValue="ETH"
-                onValueChange={(e: "ETH" | "USDC") => setCurrency(e)}
-              >
-                <SelectTrigger id="framework">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent position="popper">
-                  <SelectItem value="ETH">ETH</SelectItem>
-                  <SelectItem value="USDC">USDC</SelectItem>
-                </SelectContent>
-              </Select>
-              <div className="text-xs flex justify-between">
-                {fetchingBalance ? (
-                  <Skeleton className="h-4 w-[60px]" />
-                ) : (
-                  <div>
-                    Balance: {balance} {currency}
-                  </div>
-                )}
-                <div
-                  className="text-blue-700 underline underline-offset-2 cursor-pointer"
-                  onClick={handleOnRamp}
+              <div className="flex flex-col space-y-1.5 w-full">
+                <Label htmlFor="framework">Pay With</Label>
+                <Select
+                  defaultValue="ETH"
+                  onValueChange={(e: "ETH" | "USDC") => setCurrency(e)}
                 >
-                  Top Up
+                  <SelectTrigger id="framework">
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent position="popper">
+                    <SelectItem value="ETH">ETH</SelectItem>
+                    <SelectItem value="USDC">USDC</SelectItem>
+                  </SelectContent>
+                </Select>
+                <div className="text-xs flex justify-between">
+                  {fetchingBalance ? (
+                    <Skeleton className="h-4 w-[60px]" />
+                  ) : (
+                    <div>
+                      Balance: {balance} {currency}
+                    </div>
+                  )}
+                  <div
+                    className="text-blue-700 underline underline-offset-2 cursor-pointer"
+                    onClick={handleOnRamp}
+                  >
+                    Top Up
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Pay (Maximum Amount)</Label>
-              <div className="w-full border border-slate-200 rounded-md text-sm p-2">
-                {fetchingQuote ? (
-                  <Skeleton className="h-4 w-[60px]" />
-                ) : (
-                  <span>
-                    {amount} {currency}
-                  </span>
-                )}
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Pay (Maximum Amount)</Label>
+                <div className="w-full border border-slate-200 rounded-md text-sm p-2">
+                  {fetchingQuote ? (
+                    <Skeleton className="h-4 w-[60px]" />
+                  ) : (
+                    <span>
+                      {amount} {currency}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
           </form>
@@ -224,33 +226,28 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
             <CircleAlertIcon className="w-4 mr-1 inline-block " />
             Quote will refresh every 30s
           </div>
-        </form>
-        <div className="text-xs text-grey-400 flex items-center mt-2">
-          <CircleAlertIcon className="w-4 mr-1 inline-block " />
-          Quote will refresh every 30s
-        </div>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button
-          className="w-full"
-          onClick={() => {
-            paymentHandler();
-          }}
-        >
-          {loading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Paying...
-            </>
-          ) : (
-            <>
-              <img src={Logo} alt="logo" className="w-4 h-4 mr-2" />
-              Pay with Clarity
-            </>
-          )}
-        </Button>
-      </CardFooter>
-    </Card>
-   </>
+        </CardContent>
+        <CardFooter className="flex justify-between">
+          <Button
+            className="w-full"
+            onClick={() => {
+              paymentHandler();
+            }}
+          >
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Paying...
+              </>
+            ) : (
+              <>
+                <img src={Logo} alt="logo" className="w-4 h-4 mr-2" />
+                Pay with Clarity
+              </>
+            )}
+          </Button>
+        </CardFooter>
+      </Card>
+    </>
   );
 }

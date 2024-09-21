@@ -67,11 +67,7 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
       throw new Error("Order ID not found");
     }
 
-    const transaction = reviewTransaction(
-      orderId,
-      reviewData,
-      encodedProof
-    );
+    const transaction = reviewTransaction(orderId, reviewData, encodedProof);
 
     console.log("review transaction", transaction);
 
@@ -149,50 +145,16 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
             handleVerify={handleVerify} // callback when the proof is received
             verification_level={VerificationLevel.Device}
           >
-            0x2133423492489339430434 <ExternalLinkIcon className="w-4" />
-          </a>
-          <div className="text-xs text-grey-400 flex items-center mt-2">
-            <CircleAlertIcon className="w-4 mr-1 inline-block " />
-            Powered by Sign Protocol
-          </div>
-          <Separator className="my-4" />
-          <div>
-            <h1 className="text-sm">Your Rating:</h1>
-            <StarRating rating={rating} setRating={setRating} />
-            <form>
-              <div className="grid w-full items-center gap-4 mt-4">
-                <div className="flex flex-col space-y-1.5">
-                  <Label className="text-sm" htmlFor="comments">
-                    Comments:
-                  </Label>
-                  <Textarea
-                    id="comments"
-                    placeholder="Include any additional thoughts!"
-                    className="text-xs resize-none h-32"
-                    value={comments}
-                    onChange={(e) => setComments(e.target.value)}
-                  />
-                </div>
-              </div>
-            </form>
-            <IDKitWidget
-              app_id={import.meta.env.VITE_WID} // obtained from the Developer Portal
-              action="review" // obtained from the Developer Portal
-              onSuccess={onWIDSuccess} // callback when the modal is closed
-              handleVerify={handleVerify} // callback when the proof is received
-              verification_level={VerificationLevel.Device}
-            >
-              {({ open }) => (
-                // This is the button that will open the IDKit modal
-                <Button className="w-full mt-2" onClick={open}>
-                  Verify with World ID
-                </Button>
-              )}
-            </IDKitWidget>
-          </div>
-        </CardContent>
-      </Card>
-    </>
+            {({ open }) => (
+              // This is the button that will open the IDKit modal
+              <Button className="w-full mt-2" onClick={open}>
+                Verify with World ID
+              </Button>
+            )}
+          </IDKitWidget>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
