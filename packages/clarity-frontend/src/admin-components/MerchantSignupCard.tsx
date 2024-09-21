@@ -9,7 +9,7 @@ import {
 import { Input } from "../components/ui/input"
 import { Label } from "../components/ui/label"
 
-function MerchantSignupCard() {
+function MerchantSignupCard({ address, setAddress }: { address: string, setAddress: (val: string) => void }) {
     return (
         <Card>
             <CardHeader className="space-y-1 justify-start align-left">
@@ -29,7 +29,7 @@ function MerchantSignupCard() {
                 </div>
                 <div className="grid gap-2">
                     <Label className="text-left" htmlFor="walletAddress">Input Your Wallet Address</Label>
-                    <Input id="walletAddress" type="walletAddress" />
+                    <Input value={address} onChange={(e) => setAddress(e.target.value)} id="walletAddress" type="walletAddress" />
                 </div>
             </CardContent>
             {/* <CardFooter>
