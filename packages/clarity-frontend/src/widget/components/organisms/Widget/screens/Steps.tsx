@@ -5,38 +5,33 @@ import {
   useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
-} from 'wagmi'
-import { BigNumber } from 'ethers'
-import { parseEther } from 'ethers/lib/utils.js'
-import { useState, useEffect } from 'react'
+} from "wagmi";
+import { BigNumber } from "ethers";
+import { parseEther } from "ethers/lib/utils.js";
+import { useState, useEffect } from "react";
 
-import { Button, Container, RegistrationSteps } from '../styles'
-import {
-  getEtherscanLink,
-  getSetAddrData,
-  parseDuration,
-  parseName,
-} from '../../../../utils'
-import { Header } from '../../Header'
-import { Progress } from '../../../atoms/Progress'
+import { Button, Container, RegistrationSteps } from "../styles";
+import { getEtherscanLink, getSetAddrData, parseDuration, parseName } from "../../../../utils";
+import { Header } from "../../Header";
+import { Progress } from "../../../atoms/Progress";
 import {
   getRegistrarAddress,
   getResolverAddress,
   REGISTRAR_ABI,
   REGISTRATION_GAS_AMOUNT,
-} from '../../../../contracts'
-import { Rows } from '../../../atoms/Row'
-import { Stage } from '../../../atoms/Stage'
-import { useCost } from '../../../../hooks'
+} from "../../../../contracts";
+import { Rows } from "../../../atoms/Row";
+import { Stage } from "../../../atoms/Stage";
+import { useCost } from "../../../../hooks";
 
 interface StepsProps {
-  commitHash: Address
-  duration: string
-  hasHeader: boolean
-  isPrimaryNameChecked: boolean
-  name: string
-  secret: Address
-  setIsRegistrationSuccess: React.Dispatch<React.SetStateAction<boolean>>
+  commitHash: Address;
+  duration: string;
+  hasHeader: boolean;
+  isPrimaryNameChecked: boolean;
+  name: string;
+  secret: Address;
+  setIsRegistrationSuccess: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const Steps = ({
@@ -48,43 +43,43 @@ export const Steps = ({
   secret,
   setIsRegistrationSuccess,
 }: StepsProps) => {
-  const { chain } = useNetwork()
-  const { address, isConnected } = useAccount()
+  const { chain } = useNetwork();
+  const { address, isConnected } = useAccount();
   const commitTx = useWaitForTransaction({
     hash: commitHash,
-  })
+  });
 
-  const timerStart = 60
-  const [timer, setTimer] = useState<number>(timerStart)
+  const timerStart = 10;
+  const [timer, setTimer] = useState<number>(timerStart);
 
   const { cost, rentEth } = useCost({
     name,
     duration,
     isConnected,
-  })
+  });
 
   // Once the commit is successful, start the countdown
   useEffect(() => {
     if (commitTx.isSuccess && timer > 0) {
       const interval = setInterval(() => {
-        setTimer((prev) => prev - 1)
-      }, 1000)
+        setTimer((prev) => prev - 1);
+      }, 1000);
 
-      return () => clearInterval(interval)
+      return () => clearInterval(interval);
     }
-  }, [commitTx.isSuccess])
+  }, [commitTx.isSuccess]);
 
-  const resolver = getResolverAddress(chain?.id)
-  const registrar = getRegistrarAddress(chain?.id)
+  const resolver = getResolverAddress(chain?.id);
+  const registrar = getRegistrarAddress(chain?.id);
 
   const prepareRegister = usePrepareContractWrite({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     address: registrar as any,
     abi: REGISTRAR_ABI,
-    functionName: 'register',
+    functionName: "register",
     args: [
       parseName(name),
-      address || '0x',
+      address || "0x",
       parseDuration(duration) as unknown as BigNumber,
       secret,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -95,28 +90,26 @@ export const Steps = ({
     ],
     overrides: {
       value: parseEther((Number(rentEth)! * 1.05).toFixed(12).toString()),
-      gasLimit: BigNumber.from(
-        REGISTRATION_GAS_AMOUNT + (isPrimaryNameChecked ? 100_000 : 0)
-      ),
+      gasLimit: BigNumber.from(REGISTRATION_GAS_AMOUNT + (isPrimaryNameChecked ? 100_000 : 0)),
     },
     enabled: timer < 5,
-  })
+  });
 
-  const register = useContractWrite(prepareRegister.config)
-  const registerTx = useWaitForTransaction(register.data)
+  const register = useContractWrite(prepareRegister.config);
+  const registerTx = useWaitForTransaction(register.data);
 
   // Once the register transaction is successful, show success message
   useEffect(() => {
     if (registerTx.isSuccess) {
-      setIsRegistrationSuccess(true)
+      setIsRegistrationSuccess(true);
     }
-  }, [registerTx.isSuccess])
+  }, [registerTx.isSuccess]);
 
   const rowData = [
-    { name: 'Name', value: parseName(name) + '.eth' },
-    { name: 'Duration', value: duration },
-    { name: 'Estimated Cost', value: cost || '' },
-  ]
+    { name: "Name", value: parseName(name) + ".eth" },
+    { name: "Duration", value: duration },
+    { name: "Estimated Cost", value: cost || "" },
+  ];
 
   return (
     <Container>
@@ -139,7 +132,7 @@ export const Steps = ({
           shadow={false}
           colorStyle="accentSecondary"
           onClick={() => {
-            window.open(getEtherscanLink(register.data, chain), '_blank')
+            window.open(getEtherscanLink(register.data, chain), "_blank");
           }}
         >
           Transaction processing...
@@ -147,16 +140,16 @@ export const Steps = ({
       ) : commitTx.isSuccess && timer < 1 ? (
         // Show registerWithConfig button
         <Button
-          colorStyle={register.isError ? 'redPrimary' : 'accentPrimary'}
+          colorStyle={register.isError ? "redPrimary" : "accentPrimary"}
           loading={register.isLoading}
           onClick={() => register.write?.()}
           disabled={!register}
         >
           {register.isError
-            ? 'Error Sending Transaction'
+            ? "Error Sending Transaction"
             : register.isLoading
-              ? 'Confirm in Wallet'
-              : 'Complete Registration'}
+            ? "Confirm in Wallet"
+            : "Complete Registration"}
         </Button>
       ) : commitTx.isSuccess && timer > 0 ? (
         // Show countdown
@@ -169,12 +162,12 @@ export const Steps = ({
           shadow={false}
           colorStyle="accentSecondary"
           onClick={() => {
-            window.open(getEtherscanLink(commitHash, chain), '_blank')
+            window.open(getEtherscanLink(commitHash, chain), "_blank");
           }}
         >
           Transaction processing...
         </Button>
       )}
     </Container>
-  )
-}
+  );
+};

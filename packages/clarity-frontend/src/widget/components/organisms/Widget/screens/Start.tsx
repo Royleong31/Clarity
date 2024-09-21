@@ -153,7 +153,7 @@ export const Start = ({
         <Input
           type="text"
           label="Name"
-          placeholder="MarchantShopName.eth"
+          placeholder="MerchantShopName.eth"
           value={name}
           setValue={setName}
           isValid={isValid}
