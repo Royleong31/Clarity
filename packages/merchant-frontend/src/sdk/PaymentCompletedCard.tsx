@@ -54,6 +54,11 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
         "&nullifierHash=" +
         result.nullifier_hash
     );
+
+    setRootState((prev) => ({
+      ...prev,
+      nullifierHash: result.nullifier_hash,
+    }));
     console.log("proof verified", res);
   };
 
@@ -152,6 +157,10 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
                   onChange={(e) => setComments(e.target.value)}
                 />
               </div>
+            </div>
+            <div className="text-xs text-grey-400 flex items-center mt-2">
+              <CircleAlertIcon className="w-4 mr-1 inline-block " />
+              Leaving a review earns you a Clarity Token.
             </div>
           </form>
           {/* <Button className="w-full mt-2" onClick={onWIDSuccess}>

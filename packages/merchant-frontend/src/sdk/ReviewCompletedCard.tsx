@@ -5,8 +5,11 @@ import {
   CircleAlertIcon,
 } from "lucide-react";
 import Header from "./Header";
+import { Button } from "@/components/ui/button";
+import { useRootState } from "@/hooks/useRootState";
 
 export default function ReviewCompletedCard() {
+  const { setRootState } = useRootState();
   return (
     <>
       <Header />
@@ -28,6 +31,17 @@ export default function ReviewCompletedCard() {
             <CircleAlertIcon className="w-4 mr-1 inline-block " />
             Powered by Sign Protocol
           </div>
+          <Button
+            className="w-full mt-4"
+            onClick={() => {
+              setRootState((prev) => ({
+                ...prev,
+                orderId: undefined,
+              }));
+            }}
+          >
+            Back to shop
+          </Button>
         </CardContent>
       </Card>
     </>

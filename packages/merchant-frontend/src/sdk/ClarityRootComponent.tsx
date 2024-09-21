@@ -26,6 +26,7 @@ interface RootState {
   paymentTransactionHash?: string;
   reviewTransactionHash?: string;
   price?: number;
+  nullifierHash?: string;
   paymentSuccess: () => void;
   reviewSuccess: () => void;
 }
@@ -100,8 +101,6 @@ export function AuthConsumer() {
     read();
   }, [rootState]);
 
-  //TODO use orderId to query for review attestation, setReviewed to true if attestation found, setRootState
-
   if (!sdkHasLoaded) {
     return <LoadingPage />;
   }
@@ -109,7 +108,7 @@ export function AuthConsumer() {
   if (!orderId) {
     return <CheckoutCard />;
   }
-  
+
   if (!isLoggedIn) {
     return <WalletComponent />;
   }
