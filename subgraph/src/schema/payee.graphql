@@ -1,0 +1,8 @@
+type Payee @entity {
+  id: ID!
+  user: User!
+  volume: BigInt!
+
+  settledOrderCount: BigInt!
+  reviewedCount: BigInt!
+}

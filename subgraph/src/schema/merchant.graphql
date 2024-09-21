@@ -1,0 +1,10 @@
+type Merchant @entity {
+  # address of merchant
+  id: ID! # network-id
+  merchantId: Int!
+  address: String!
+  revenue: BigInt!
+  completedOrderCount: BigInt!
+  reviewedOrderCount: BigInt!
+  withdrawn: BigInt!
+}

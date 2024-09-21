@@ -1,0 +1,27 @@
+{
+  "name": "strategic-swap-v1-subgraph",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "cat ./src/schema/*.graphql > schema.graphql && graph codegen",
+    "codegen-non-mainnet": "find ./schema -name '*.graphql' ! -name 'veToken.graphql' -exec cat {} + > schema.graphql && graph codegen",
+    "build": "graph build",
+    "prepare:main": "yarn mustache ./config/${NETWORK}.json subgraph.template.yaml subgraph.yaml && yarn mustache ./config/${NETWORK}.json ./src/utils/constants.template.ts ./src/utils/constants.ts && rm -rf generated && yarn codegen",
+    "prepare:sepolia": "NETWORK=sepolia yarn prepare:main",
+    "prepare:arbitrum-sepolia": "NETWORK=arbitrum-sepolia yarn prepare:main",
+    "prepare:base-sepolia": "NETWORK=base-sepolia yarn prepare:main",
+    "deploy:sepolia": "yarn prepare:sepolia && graph auth --studio $SUBGRAPH_ACCESS_KEY && graph deploy --studio $SUBGRAPH_NAME",
+    "deploy:arbitrum-sepolia": "yarn prepare:arbitrum-sepolia && graph auth --studio $SUBGRAPH_ACCESS_KEY && graph deploy --studio $SUBGRAPH_NAME",
+    "deploy:base-sepolia": "yarn prepare:base-sepolia && graph auth --studio $SUBGRAPH_ACCESS_KEY && graph deploy --studio $SUBGRAPH_NAME",
+    "deploy": "graph deploy --product hosted-service victortanzy123/template-subgraph --deploy-key $SUBGRAPH_ACCESS_KEY",
+    "create-local": "graph create uniswap-v4 --node http://127.0.0.1:8020",
+    "remove-local": "graph remove --node http://127.0.0.1:8020/ main/template-subgraph",
+    "deploy-local": "graph deploy uniswap-v4 --ipfs http://127.0.0.1:5001 --node http://127.0.0.1:8020",
+    "format": "yarn prettier --write \"**/src/**/**/*.{js,ts}\""
+  },
+  "devDependencies": {
+    "@graphprotocol/graph-cli": "^0.81.0",
+    "@graphprotocol/graph-ts": "^0.35.0",
+    "mustache": "^3.1.0",
+    "prettier": "^3.0.2"
+  }
+}

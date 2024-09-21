@@ -1,0 +1,26 @@
+enum OrderStatus {
+  UNSETTLED
+  UNREVIEWED # Means settled
+  REVIEWED # Means settled & reviewed
+}
+
+type Order @entity {
+  id: ID!
+  orderId: Bytes!
+  merchantId: Int!
+  merchant: Merchant!
+  payee: String!
+  reviewAttestationId: BigInt!
+  amount: BigInt!
+  settled: Boolean!
+
+  # Transactions
+  creationTx: Transaction!
+  paymentTx: Transaction
+  reviewTx: Transaction
+
+  # Timestamps
+  createdTimestamp: BigInt!
+  settledTimestamp: BigInt!
+  reviewedTimestamp: BigInt!
+}

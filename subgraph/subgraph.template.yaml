@@ -1,0 +1,68 @@
+specVersion: 0.0.4
+schema:
+  file: ./schema.graphql
+features:
+  - ipfsOnEthereumContracts
+dataSources:
+  - kind: ethereum/contract
+    name: Clarity
+    network: "{{network}}"
+    source:
+      address: "{{Clarity_Address}}"
+      startBlock: {{Clarity_StartBlock}}
+      abi: Clarity
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Clarity
+        - Token
+      abis:
+        - name: Clarity
+          file: ./abis/Clarity.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+      eventHandlers:
+        - event: Initialised(address,address,address,address)
+          handler: handleInitialise
+        - event: MerchantRegistered(indexed uint256,indexed address)
+          handler: handleMerchantRegister
+        - event: MerchantUpdate(indexed uint256,indexed address)
+          handler: handleMerchantUpdate
+        - event: OrderCreated(indexed bytes32,indexed uint256,uint256)
+          handler: handleOrderCreated
+        - event: OrderPaymentSettled(indexed bytes32,indexed uint256,indexed address,uint256)
+          handler: handleOrderPaymentSettled
+        - event: RevenueWithdrawn(indexed uint256,uint256)
+          handler: handleRevenueWithdraw
+        - event: ReviewAttested(indexed bytes32,indexed address,uint64)
+          handler: handleReviewAttest
+      file: ./src/mappings/main.ts
+  # Clarity SP Hook Contract
+  - kind: ethereum/contract
+    name: ClaritySPHook
+    network: "{{network}}"
+    source:
+      address: "{{ClaritySPHook_Address}}"
+      startBlock: {{ClaritySPHook_StartBlock}}
+      abi: ClaritySPHook
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - SecondEntity
+      abis:
+        - name: ClaritySPHook
+          file: ./abis/ClaritySPHook.json
+      eventHandlers:
+        - event: Initialised(address,uint256)
+          handler: handleHookInitialise
+        - event: UserAttestationRewardMint(indexed uint256,uint256,uint64)
+          handler: handleUserAttestationRewardMint
+        - event: UserAttestationRewardBurn(indexed uint256,uint256,uint64)
+          handler: handleUserAttestationRewardBurn
+        - event: UserCollectorRegister(indexed uint256,address)
+          handler: handleUserCollectorRegister
+      file: ./src/mappings/hook.ts
