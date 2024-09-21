@@ -41,6 +41,7 @@ function createRoutes() {
     api.route(path.path, {
       handler: path.handler,
       link: path.link,
+      timeout: "3 minutes",
     });
   }
 }

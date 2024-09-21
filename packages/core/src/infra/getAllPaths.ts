@@ -18,7 +18,6 @@ export const getAllPaths = (
     if ((value as any).method) {
       paths.push({
         handler: `${rootPath}${currentPath}.main`,
-        timeout: "3 minutes",
         link: [...bindedValuesArr],
         path: constructPath(value as ApiSchema),
       });
