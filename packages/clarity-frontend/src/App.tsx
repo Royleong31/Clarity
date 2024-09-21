@@ -1,9 +1,21 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
-import AdminDashboard from './admin-pages/AdminDashboard'; // Import the Admin component
-import AdminSignup from './admin-pages/AdminSignup';
+import AdminDashboard from "./admin-pages/AdminDashboard"; // Import the Admin component
+import AdminSignup from "./admin-pages/AdminSignup";
 import { useMerchantsQuery } from "./generated/graphql";
-import { useState } from 'react';
+import { useState } from "react";
+import { createPublicClient, createWalletClient, http, custom } from "viem";
+import { sepolia } from "viem/chains";
+
+// const client = createPublicClient({
+//   chain: sepolia,
+//   transport: http(),
+// });
+
+const client = createWalletClient({
+  chain: sepolia,
+  transport: custom(window.ethereum!),
+});
 
 function App() {
   const [count, setCount] = useState(0);
@@ -15,7 +27,14 @@ function App() {
         <Route path="/adminsignup" element={<AdminSignup />} />
         <Route path="/admin" element={<AdminDashboard />} />
         {/* Default route showing 'Hello world' */}
-        <Route path="/" element={<div><p>Hello world</p></div>} />
+        <Route
+          path="/"
+          element={
+            <div>
+              <p>Hello world</p>
+            </div>
+          }
+        />
       </Routes>
     </Router>
   );
