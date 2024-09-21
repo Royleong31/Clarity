@@ -1,11 +1,9 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 // import ClarityRootComponent from "./sdk/ClarityRootComponent";
-import LandingPage from "./pages/LandingPage";
 // import PaymentPage from "./pages/PaymentPage";
 import ErrorPage from "./pages/ErrorPage";
 import ClarityRootComponent from "./sdk/ClarityRootComponent";
-
 const router = createBrowserRouter([
   {
     path: "*",
@@ -14,11 +12,6 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <LandingPage />,
-    errorElement: <h1>Error</h1>,
-  },
-  {
-    path: "/pay",
     // element: <PaymentPage />,
     element: (
       <ClarityRootComponent

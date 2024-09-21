@@ -32,8 +32,13 @@ import { PaymasterMode } from "@biconomy/account";
 
 import { getPrice } from "@/utils/1inchCalls";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useRootState } from "@/hooks/useRootState";
+
+import { clarityClient } from "../../../core/src/react-query/clarityClient";
 
 export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
+  const { mutateAsync } = clarityClient.confirmOrderPayment.useMutation();
+  const { rootState } = useRootState();
   const [currency, setCurrency] =
     useState<keyof typeof currencyToAddress>("ETH");
 
@@ -49,12 +54,12 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
 
   const currencyToAddress = {
     ETH: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-    USDc: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
+    USDC: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
   };
 
   const currencyToDecimals = {
     ETH: 12,
-    USDc: 6,
+    USDC: 6,
   };
 
   useEffect(() => {
@@ -101,7 +106,7 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
     const tokenAddress = currencyToAddress[currency];
     const txn1 = approve(tokenAddress, 1000000000);
     console.log("txn 1", txn1);
-    const orderId = "someOrderId";
+    const orderId = rootState.orderId;
 
     if (!orderId) {
       setLoading(false);
@@ -126,6 +131,7 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
       console.log("reason: ", reason);
       const { transactionHash } = await waitForTxHash();
       console.log(transactionHash);
+      await mutateAsync({ body: { orderId } });
       setLoading(false);
       onSuccess();
     }
@@ -141,10 +147,10 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
   const getQuote = async () => {
     let price;
     setFetchingQuote(true);
-    if (currency === "USDc") {
-      setAmount(10);
+    if (currency === "USDC") {
+      setAmount(0.1);
     } else {
-      price = await getPrice(currencyToAddress[currency], 10);
+      price = await getPrice(currencyToAddress[currency], 0.1);
       setAmount(price / 10 ** currencyToDecimals[currency]);
     }
     setFetchingQuote(false);
@@ -167,14 +173,14 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
               <Label htmlFor="framework">Pay With</Label>
               <Select
                 defaultValue="ETH"
-                onValueChange={(e: "ETH" | "USDc") => setCurrency(e)}
+                onValueChange={(e: "ETH" | "USDC") => setCurrency(e)}
               >
                 <SelectTrigger id="framework">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
                 <SelectContent position="popper">
                   <SelectItem value="ETH">ETH</SelectItem>
-                  <SelectItem value="USDc">USDc</SelectItem>
+                  <SelectItem value="USDC">USDC</SelectItem>
                 </SelectContent>
               </Select>
               <div className="text-xs flex justify-between">

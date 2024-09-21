@@ -1,3 +1,4 @@
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,14 +11,25 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 import Logo from "../assets/logo.svg";
-import { useNavigate } from "react-router-dom";
+import { useRootState } from "@/hooks/useRootState";
 
+import { v4 as uuidv4 } from "uuid";
+import { merchantClient } from "../../../core/src/react-query/merchantClient";
 export default function CheckoutCard() {
-  const navigate = useNavigate();
+  const { setRootState } = useRootState();
+  const { mutateAsync, isPending } = merchantClient.createOrder.useMutation();
 
-  const handlePay = () => {
-    // Redirect to the desired path
-    navigate("/pay");
+  const handlePay = async () => {
+    // Call the backend to create an order
+    const cartId = uuidv4();
+    console.log(cartId);
+    const response = await mutateAsync({ body: { cartId } });
+    console.log(response.body.id);
+
+    setRootState((prev) => ({
+      ...prev,
+      orderId: response.body.id,
+    }));
   };
   return (
     <Card className="w-md">
@@ -53,9 +65,19 @@ export default function CheckoutCard() {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button className="w-full flex items-center" onClick={handlePay}>
-          <img src={Logo} alt="logo" className="w-4 h-4 mr-2" />
-          Pay with Clarity
+        <Button
+          className="w-full flex items-center"
+          onClick={handlePay}
+          disabled={isPending}
+        >
+          {isPending ? (
+            <Loader2 className="animate-spin" />
+          ) : (
+            <>
+              <img src={Logo} alt="logo" className="w-4 h-4 mr-2" />
+              Pay with Clarity
+            </>
+          )}
         </Button>
       </CardFooter>
     </Card>

@@ -6,6 +6,7 @@ import { useMerchantsQuery } from "./generated/graphql";
 import { useState } from "react";
 import { createPublicClient, createWalletClient, http, custom } from "viem";
 import { sepolia } from "viem/chains";
+import { Hello } from "./clarity-sdk/Hello";
 
 // const client = createPublicClient({
 //   chain: sepolia,
@@ -32,6 +33,7 @@ function App() {
           element={
             <div>
               <p>Hello world</p>
+              <Hello/>
             </div>
           }
         />

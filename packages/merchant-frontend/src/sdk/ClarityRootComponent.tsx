@@ -6,6 +6,7 @@ import PaymentCompletedCard from "./PaymentCompletedCard";
 import ReviewCompletedCard from "./ReviewCompletedCard";
 import LoadingPage from "@/pages/LoadingPage";
 import { useRootState } from "@/hooks/useRootState";
+import CheckoutCard from "./CheckoutCard";
 
 interface RootContextType {
   rootState: RootState;
@@ -18,9 +19,10 @@ export const RootContext = createContext<RootContextType | undefined>(undefined)
 interface RootState {
   orderId?: string;
   attestationId?: string;
+  price?: number;
   paymentSuccess: () => void;
   reviewSuccess: () => void;
-}
+} 
 
 const ClarityRootComponent = ({
   orderId,
@@ -72,6 +74,10 @@ export function AuthConsumer() {
   }
 
   if (!orderId) {
+    return <CheckoutCard />;
+  }
+
+  if (orderId) {
     return <PaymentCard onSuccess={paymentSuccess} />; // Here, set order id when done
   }
 
