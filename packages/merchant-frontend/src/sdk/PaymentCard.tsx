@@ -20,13 +20,20 @@ import {
 import { DynamicWidget } from "@dynamic-labs/sdk-react-core";
 import { useEffect, useState } from "react";
 import Logo from "../assets/logo.svg";
+import abi from "../abi/Clarity.json";
 
-import axios from "axios";
+import { useFunding } from "@dynamic-labs/sdk-react-core";
+import { useSmartWallet } from "@/hooks/useSmartWallet";
 
 export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
-  const [currency, setCurrency] = useState<keyof typeof currencyToAddress>("ETH");
+  const [currency, setCurrency] =
+    useState<keyof typeof currencyToAddress>("ETH");
 
   const [amount, setAmount] = useState(0);
+
+  const { openFunding } = useFunding();
+
+  const smartWallet = useSmartWallet();
 
   const currencyToAddress = {
     ETH: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
@@ -40,41 +47,29 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
   //   USDc: 6,
   // };
 
-  async function httpCall() {
-    const url = "https://api.1inch.dev/swap/v6.0/1/quote";
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${import.meta.env.VITE_1INCH_KEY}`,
-      },
-      params: {
-        src: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-        dst: currencyToAddress[currency],
-        amount: "10000000000000000", // TODO change this to the value returned from the BE
-      },
-      paramsSerializer: {
-        indexes: null,
-      },
-    };
-
-    try {
-      const response = await axios.get(url, config);
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   useEffect(() => {
-    httpCall();
     const interval = setInterval(() => {
       // Code to be executed every 30 seconds
+      setAmount(10);
       console.log("Fetching new quote");
-    }, 5000);
+    }, 30000);
 
     // Clean up the interval when the component unmounts
     return () => clearInterval(interval);
   }, []);
+
+  const paymentHandler = async () => {
+    const clarityABI = abi.abi;
+    const contractAddress = "0x479eE4d9BF5109bF6d55211871BE775C2e95eE58";
+    const tokenAddress = currencyToAddress[currency];
+  };
+
+  const handleOnRamp = async () => {
+    await openFunding({
+      token: "USDT",
+      address: smartWallet.accountAddress,
+    });
+  };
 
   return (
     <Card className="w-md">
@@ -91,10 +86,7 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
 
             <div className="flex flex-col space-y-1.5 w-full">
               <Label htmlFor="framework">Pay With</Label>
-              <Select
-                defaultValue="ETH"
-                onValueChange={(e) => setCurrency(e as keyof typeof currencyToAddress)}
-              >
+              <Select defaultValue="ETH" onValueChange={(e) => setCurrency(e)}>
                 <SelectTrigger id="framework">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
@@ -104,11 +96,20 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
                   <SelectItem value="USDc">USDc</SelectItem>
                 </SelectContent>
               </Select>
+              <div className="text-xs flex justify-between">
+                <div>Balance: 30{currency}</div>
+                <div
+                  className="text-blue-700 underline underline-offset-2 cursor-pointer"
+                  onClick={handleOnRamp}
+                >
+                  Top Up
+                </div>
+              </div>
             </div>
 
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="name">Pay (Maximum Amount)</Label>
-              <div>
+              <div className="w-full border border-slate-200 rounded-md text-sm p-2">
                 {amount} {currency}
               </div>
             </div>
@@ -120,7 +121,7 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button className="w-full">
+        <Button className="w-full" onClick={paymentHandler}>
           <img src={Logo} alt="logo" className="w-4 h-4 mr-2" />
           Pay with Clarity
         </Button>

@@ -36,7 +36,7 @@ import {
   IPaymaster,
 } from "@biconomy/account";
 
-export const X = ({ children }: { children: ReactNode }) => {
+export const WalletProvider = ({ children }: { children: ReactNode }) => {
   const environmentId = import.meta.env.VITE_DYNAMIC_ENV_ID;
   if (!environmentId) {
     throw new Error(
@@ -99,9 +99,11 @@ export const SmartWalletContext = createContext<
 
 const SmartWalletProvider = ({ children }: { children: ReactNode }) => {
   const userWallets = useUserWallets();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const embeddedWallet: Wallet<any> | undefined = userWallets.find(
     (wallet) => wallet.connector?.isEmbeddedWallet === true
   );
+  const chainId = ChainId.SEPOLIA;
   console.log("Embedded wallet:", embeddedWallet);
   const [smartWallet, setSmartWallet] = useState<BiconomySmartAccountV2>();
 
@@ -111,14 +113,14 @@ const SmartWalletProvider = ({ children }: { children: ReactNode }) => {
       // Initialize your bundler
       const bundlerKey = import.meta.env.VITE_BUNDLER_KEY;
       const bundler: IBundler = new Bundler({
-        bundlerUrl: `https://bundler.biconomy.io/api/v2/${ChainId.SEPOLIA}/${bundlerKey}`,
-        chainId: ChainId.SEPOLIA, // Replace this with your desired network
+        bundlerUrl: `https://bundler.biconomy.io/api/v2/${chainId}/${bundlerKey}`,
+        chainId: chainId, // Replace this with your desired network
         entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS, // This is a Biconomy constant
       });
 
       // Initialize your paymaster
       const paymasterKey = import.meta.env.VITE_PAYMASTER_KEY;
-      const paymasterUrl = `https://paymaster.biconomy.io/api/v1/${ChainId.SEPOLIA}/${paymasterKey}`;
+      const paymasterUrl = `https://paymaster.biconomy.io/api/v1/${chainId}/${paymasterKey}`;
       const paymaster: IPaymaster = new BiconomyPaymaster({
         paymasterUrl: paymasterUrl,
       });
@@ -143,7 +145,7 @@ const SmartWalletProvider = ({ children }: { children: ReactNode }) => {
 
       const smartAccountConfig: BiconomySmartAccountV2Config = {
         provider: provider,
-        chainId: ChainId.SEPOLIA, // Replace this with your target network
+        chainId: chainId, // Replace this with your target network
         bundler: bundler, // Use the `bundler` we initialized above
         paymaster: paymaster, // Use the `paymaster` we initialized above
         entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS, // This is a Biconomy constant
