@@ -15,7 +15,7 @@ function App() {
         <Route path="/adminsignup" element={<AdminSignup />} />
         <Route path="/admin" element={<AdminDashboard />} />
         {/* Default route showing 'Hello world' */}
-        <Route path="/" element={<div><p>Hello world</p></div>} />
+        <Route path="/" element={<AdminDashboard />} />
       </Routes>
     </Router>
   );
