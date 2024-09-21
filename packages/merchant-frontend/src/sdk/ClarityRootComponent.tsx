@@ -101,8 +101,6 @@ export function AuthConsumer() {
     read();
   }, [rootState]);
 
-  return <ReviewCompletedCard />
-  // return <PaymentCompletedCard onSuccess={reviewSuccess} />;
   if (!sdkHasLoaded) {
     return <LoadingPage />;
   }
