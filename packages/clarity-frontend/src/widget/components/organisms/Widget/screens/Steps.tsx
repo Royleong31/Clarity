@@ -49,7 +49,7 @@ export const Steps = ({
     hash: commitHash,
   });
 
-  const timerStart = 10;
+  const timerStart = 60;
   const [timer, setTimer] = useState<number>(timerStart);
 
   const { cost, rentEth } = useCost({
