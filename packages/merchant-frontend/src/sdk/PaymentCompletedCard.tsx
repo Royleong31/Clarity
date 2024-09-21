@@ -104,7 +104,7 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
         ...prev,
         attestationId: "1234",
         isOrderReviewed: true,
-        paymentTransactionHash: transactionHash,
+        reviewTransactionHash: transactionHash,
       }));
       setLoading(false);
       onSuccess(); // Call the onSuccess prop function
