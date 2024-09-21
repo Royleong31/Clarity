@@ -74,7 +74,7 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
     const tokenAddress = currencyToAddress[currency];
     const txn1 = approve(tokenAddress, 1000000000);
     console.log("txn 1", txn1);
-    const orderId = someOrderId;
+    const orderId = "someOrderId";
 
     if (!orderId) {
       setLoading(false);
