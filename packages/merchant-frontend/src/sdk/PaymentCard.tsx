@@ -49,13 +49,11 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
 
   const currencyToAddress = {
     ETH: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-    BTC: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
     USDc: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
   };
 
   const currencyToDecimals = {
     ETH: 12,
-    BTC: 2,
     USDc: 6,
   };
 
@@ -80,7 +78,7 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
     setFetchingBalance(true);
     if (smartWallet) {
       // console.log(balances[0].formattedAmount);
-      
+
       if (currency === "ETH") {
         const balances = await smartWallet.getBalances([]);
         console.log(balances[0].formattedAmount);
@@ -90,7 +88,7 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
         const balances = await smartWallet.getBalances([
           currencyToAddress[currency],
         ]);
-        console.log(balances)
+        console.log(balances);
         setBalance(balances[0].formattedAmount);
       }
     }
@@ -144,9 +142,9 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
     let price;
     setFetchingQuote(true);
     if (currency === "USDc") {
-      setAmount(1000);
+      setAmount(10);
     } else {
-      price = await getPrice(currencyToAddress[currency], 1000);
+      price = await getPrice(currencyToAddress[currency], 10);
       setAmount(price / 10 ** currencyToDecimals[currency]);
     }
     setFetchingQuote(false);
@@ -169,20 +167,19 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
               <Label htmlFor="framework">Pay With</Label>
               <Select
                 defaultValue="ETH"
-                onValueChange={(e: "ETH" | "BTC" | "USDc") => setCurrency(e)}
+                onValueChange={(e: "ETH" | "USDc") => setCurrency(e)}
               >
                 <SelectTrigger id="framework">
                   <SelectValue placeholder="Select" />
                 </SelectTrigger>
                 <SelectContent position="popper">
                   <SelectItem value="ETH">ETH</SelectItem>
-                  <SelectItem value="BTC">BTC</SelectItem>
                   <SelectItem value="USDc">USDc</SelectItem>
                 </SelectContent>
               </Select>
               <div className="text-xs flex justify-between">
                 {fetchingBalance ? (
-                  "Loading"
+                  <Skeleton className="h-4 w-[60px]" />
                 ) : (
                   <div>
                     Balance: {balance} {currency}
