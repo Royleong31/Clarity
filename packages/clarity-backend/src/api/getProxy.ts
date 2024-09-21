@@ -41,24 +41,23 @@ export const main = handler(
     try {
       response = await got.get(generatedUrl, {
         throwHttpErrors: false,
-        headers: { ...request.headers, host: undefined },
+        headers: {
+          ...request.headers,
+          host: undefined,
+        },
       });
 
       const rawResponseBody = response.body;
       console.log("raw response", rawResponseBody);
-
+      console.log("returning");
       const parsedResponseBody = JSON.parse(rawResponseBody);
       return {
         statusCode: response.statusCode as any,
         body: parsedResponseBody,
-        headers: {
-          ...response.headers,
-          "content-length": undefined,
-          "content-type": undefined,
-          "content-encoding": undefined,
-        } as any,
+        headers: {} as any,
       };
     } catch (error) {
+      console.log("error");
       console.log(error);
       return {
         statusCode: response?.statusCode ?? (400 as any),
