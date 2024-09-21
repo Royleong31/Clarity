@@ -1,0 +1,8 @@
+{
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "exclude": ["packages"],
+  "compilerOptions": {
+    "strict": true,
+    "moduleResolution": "node"
+  }
+}
