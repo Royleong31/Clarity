@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 const SIGN_PROTOCOL_TESTNET_URL_PREFIX = "https://testnet-rpc.sign.global/api";
 
 export async function getReviews() {
-  const API_URL = `${SIGN_PROTOCOL_TESTNET_URL_PREFIX}/index/attestations?schemaId=onchain_evm_11155111_0x25D`;
+  const API_URL = `${SIGN_PROTOCOL_TESTNET_URL_PREFIX}/index/attestations?schemaId=onchain_evm_11155111_0x25d`;
 
   const res = await axios.get(API_URL);
   // const { ratings, comment } = decodeClarityReview(
@@ -23,6 +23,7 @@ export async function getReviews() {
       console.error("Failed to decode review", row.data);
     }
   });
+  console.log("reviews", reviews);
   return reviews;
 }
 
@@ -35,10 +36,7 @@ function decodeClarityReview(encodedReview: string) {
   const REVIEW_TYPES = ["uint256", "string"];
 
   // Decode the encoded review
-  const [ratings, comment] = ethers.utils.defaultAbiCoder.decode(
-    REVIEW_TYPES,
-    encodedReview
-  );
+  const [ratings, comment] = ethers.utils.defaultAbiCoder.decode(REVIEW_TYPES, encodedReview);
 
   return {
     ratings: ratings.toNumber(), // Convert BigNumber to number
