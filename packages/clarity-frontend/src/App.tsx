@@ -15,11 +15,11 @@ function App() {
           path="/"
           element={
             <div>
-              <p>Hello world</p> 
+              <p>Hello world</p>
             </div>
           }
         />
-      {/* </Routes> */}
+      </Routes>
     </Router>
   );
 }
