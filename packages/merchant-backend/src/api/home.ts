@@ -9,7 +9,7 @@ const schema = contract.home;
 export const main = handler(
   async (request) => {
     console.log("received request");
-
+    console.log((await db.query.merchantOrders.findMany()).length);
     return {
       statusCode: 200 as const,
       body: {
