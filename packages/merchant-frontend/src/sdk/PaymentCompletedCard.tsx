@@ -126,7 +126,7 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
         <Separator className="mb-4" />
         <div className="text-xs mb-2">Transaction Hash:</div>
         <a
-          href={`https://sepolia.etherscan.io/tx/${rootState.paymentTransactionHash}`}
+          href={`https://sepolia.basescan.org/tx/${rootState.paymentTransactionHash}`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-xs flex items-center w-full justify-between border border-black rounded-lg px-2 py-1"
