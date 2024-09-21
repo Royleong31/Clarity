@@ -37,7 +37,6 @@ const PartialStar = ({
 
 function RatingCard({ rating }: { rating: number }) {
   // average rating
-  console.log("rating", rating);
   const starVal = [0, 0, 0, 0, 0];
 
   for (let i = 0; i < starVal.length; i++) {

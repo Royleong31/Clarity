@@ -23,7 +23,6 @@ function AdminDashboard() {
   function calculateAverage(data: Review[]) {
     if (data.length === 0) return 0; // Return 0 if the array is empty
     let total = 0;
-    console.log(data);
     data.forEach((el) => {
       total += el.ratings;
     });
