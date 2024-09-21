@@ -1,0 +1,18 @@
+enum TokenType {
+  ERC20
+  NATIVE
+}
+
+# Generic Token Identity
+type Token @entity {
+  # token address
+  id: ID!
+
+  # metadata
+  type: TokenType!
+  name: String!
+  symbol: String!
+  decimals: BigInt!
+  volume: BigDecimal!
+
+}

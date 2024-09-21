@@ -1,0 +1,22 @@
+type Manager @entity {
+  # contract address
+  id: ID!
+  spAddress: String!
+  spHook: String!
+  baseCurrency: String!
+
+  # Orders - `totalOrders`
+  orderCount: BigInt!
+  settledOrderCount: BigInt!
+  reviewedOrderCount: BigInt!
+
+  txCount: BigInt!
+  totalRevenue: BigInt!
+
+  # Entities
+  merchantCount: BigInt!
+  payeeCount: BigInt!
+
+  # current owner of attestor contract
+  owner: String!
+}

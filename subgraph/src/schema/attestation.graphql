@@ -1,0 +1,6 @@
+type AttestationInfo @entity {
+  id: ID!
+  reviewAttestationId: BigInt!
+  nullifierHash: BigInt!
+  revoked: Boolean!
+}

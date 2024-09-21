@@ -1,0 +1,6 @@
+type WorldIdUser @entity {
+  id: ID!
+  nullifierHash: BigInt!
+  collector: String!
+  points: BigInt!
+}

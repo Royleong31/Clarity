@@ -1,0 +1,13 @@
+type Transaction @entity {
+  # txn hash
+  id: ID!
+  # block txn was included in
+  blockNumber: BigInt!
+  # timestamp txn was confirmed
+  timestamp: BigInt!
+  # gas used during txn execution
+  gasLimit: BigInt!
+  gasPrice: BigInt!
+  from: Bytes!
+  to: Bytes
+}

@@ -1,0 +1,7 @@
+{
+  "network": "base-sepolia",
+  "Clarity_Address": "0xf46e3b69cade327915b7ce6da7aa64624303c83e",
+  "Clarity_StartBlock": 15582935,
+  "ClaritySPHook_Address": "0x8932ec030eb39df9d5d824bca3e68d05a0424ba6",
+  "ClaritySPHook_StartBlock": 15582890
+}

@@ -1,0 +1,9 @@
+enum UserType {
+  MERCHANT
+  PAYEE # Default
+}
+
+type User @entity {
+  id: ID!
+  type: UserType!
+}
