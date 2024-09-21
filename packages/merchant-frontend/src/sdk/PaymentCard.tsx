@@ -29,6 +29,11 @@ import {
   settlePaymentOnlyByBaseCurrencyTransaction,
 } from "../utils/contractFunctions";
 import { PaymasterMode } from "@biconomy/account";
+
+import { getPrice } from "@/utils/1inchCalls";
+import { setPriority } from "os";
+import { set } from "lodash";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useRootState } from "@/hooks/useRootState";
 
 export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
@@ -40,31 +45,35 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
   const { openFunding } = useFunding();
 
   const smartWallet = useSmartWallet();
+  const [fetchingQuote, setFetchingQuote] = useState(false);
   const { setRootState } = useRootState();
   const [loading, setLoading] = useState(false);
 
   const currencyToAddress = {
     ETH: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-    BTC: "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+    BTC: "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
     USDc: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
   };
 
-  // const currencyToDecimals = {
-  //   ETH: 18,
-  //   BTC: 8,
-  //   USDc: 6,
-  // };
+  const currencyToDecimals = {
+    ETH: 12,
+    BTC: 2,
+    USDc: 6,
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // Code to be executed every 30 seconds
-      setAmount(10);
-      console.log("Fetching new quote");
+      getQuote();
     }, 30000);
 
     // Clean up the interval when the component unmounts
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    console.log("fetching new quote");
+    getQuote();
+  }, [currency]);
 
   const paymentHandler = async () => {
     console.log("paying");
@@ -115,6 +124,18 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
     });
   };
 
+  const getQuote = async () => {
+    let price;
+    setFetchingQuote(true);
+    if (currency === "USDc") {
+      setAmount(1000);
+    } else {
+      price = await getPrice(currencyToAddress[currency], 1000);
+      setAmount(price / 10 ** currencyToDecimals[currency]);
+    }
+    setFetchingQuote(false);
+  };
+
   return (
     <Card className="w-md">
       <CardHeader className="pb-2">
@@ -154,7 +175,13 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="name">Pay (Maximum Amount)</Label>
               <div className="w-full border border-slate-200 rounded-md text-sm p-2">
-                {amount} {currency}
+                {fetchingQuote ? (
+                  <Skeleton className="h-4 w-[60px]" />
+                ) : (
+                  <span>
+                    {amount} {currency}
+                  </span>
+                )}
               </div>
             </div>
           </div>

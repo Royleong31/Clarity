@@ -22,7 +22,7 @@ const router = createBrowserRouter([
     // element: <PaymentPage />,
     element: (
       <ClarityRootComponent
-        // orderId="test"
+        orderId=""
         paymentSuccess={() => {
           console.log("payment success");
         }}
