@@ -1,18 +1,18 @@
-import { CrossIcon, CheckIcon } from './Icons'
-import { mq } from '@ensdomains/thorin'
-import styled, { css } from 'styled-components'
+import { CrossIcon, CheckIcon } from "./Icons";
+import { mq } from "@ensdomains/thorin";
+import styled, { css } from "styled-components";
 
 const InputWrapper = styled.div(
-  ({ theme }) => css`
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ({ theme }: any) => css`
     width: 100%;
     display: flex;
     position: relative;
     flex-direction: column;
     gap: ${theme.space[1]};
     padding: ${theme.space[3]} ${theme.space[4]};
-    border: ${theme.borderWidths['0.375']} solid
-      ${theme.colors.backgroundSecondary};
-    background-color: ${theme.colors['0']};
+    border: ${theme.borderWidths["0.375"]} solid ${theme.colors.backgroundSecondary};
+    background-color: ${theme.colors["0"]};
     border-radius: ${theme.radii.medium};
     box-shadow: 1px 1px 6px rgba(66, 124, 211, 0.1);
 
@@ -20,9 +20,9 @@ const InputWrapper = styled.div(
       gap: ${theme.space[2]};
     `)}
   `
-)
+);
 
-export const Label = styled.label<{ size?: 'lg' }>(
+export const Label = styled.label<{ size?: "lg" }>(
   ({ size, theme }) => css`
     font-size: 15px;
     font-family: ${theme.fonts.sans};
@@ -30,13 +30,13 @@ export const Label = styled.label<{ size?: 'lg' }>(
     color: ${theme.colors.textTertiary};
     text-align: left;
 
-    ${size === 'lg' &&
+    ${size === "lg" &&
     css`
       font-size: ${theme.fontSizes.large};
       font-weight: ${theme.fontWeights.normal};
     `}
   `
-)
+);
 
 const StyledInput = styled.input(
   ({ theme }) => css`
@@ -46,7 +46,7 @@ const StyledInput = styled.input(
     line-height: 1;
     width: 100%;
     border: none;
-    border-bottom: ${theme.borderWidths['0.375']} solid transparent;
+    border-bottom: ${theme.borderWidths["0.375"]} solid transparent;
     transition: border-bottom 0.1s ease-in-out;
     background-color: inherit;
 
@@ -56,7 +56,7 @@ const StyledInput = styled.input(
 
     &:focus {
       outline: none;
-      border-bottom: ${theme.borderWidths['0.375']} solid ${theme.colors.accent};
+      border-bottom: ${theme.borderWidths["0.375"]} solid ${theme.colors.accent};
     }
 
     &:disabled {
@@ -68,7 +68,7 @@ const StyledInput = styled.input(
       font-size: 1.5rem;
     `)}
   `
-)
+);
 
 const Counters = styled.div(
   ({ theme }) => css`
@@ -78,10 +78,11 @@ const Counters = styled.div(
     right: ${theme.space[4]};
     bottom: ${theme.space[4]};
   `
-)
+);
 
 const Counter = styled.button(
-  ({ theme }) => css`
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ({ theme }: any) => css`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -103,7 +104,7 @@ const Counter = styled.button(
       background-color: #f3f3f3;
     }
   `
-)
+);
 
 const ValidationIconWrapper = styled.div<{ isValid?: boolean | undefined }>(
   ({ theme, isValid }) => css`
@@ -121,16 +122,16 @@ const ValidationIconWrapper = styled.div<{ isValid?: boolean | undefined }>(
     color: #fff;
     transition: background-color 0.1s ease-in-out;
   `
-)
+);
 
 interface InputProps {
-  disabled?: boolean
-  isValid?: boolean | undefined
-  label: string
-  placeholder: string
-  setValue: React.Dispatch<React.SetStateAction<string>>
-  type: 'number' | 'text'
-  value: string
+  disabled?: boolean;
+  isValid?: boolean | undefined;
+  label: string;
+  placeholder: string;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
+  type: "number" | "text";
+  value: string;
 }
 
 export const Input = ({
@@ -144,19 +145,16 @@ export const Input = ({
   ...props
 }: InputProps) => {
   const handleIncrement = () => {
-    const currentValue = parseInt(value)
-    if (currentValue > 9) return
-    setValue((currentValue + 1).toString() + ' years')
-  }
+    const currentValue = parseInt(value);
+    if (currentValue > 9) return;
+    setValue((currentValue + 1).toString() + " years");
+  };
 
   const handleDecrement = () => {
-    const currentValue = parseInt(value)
-    if (currentValue < 2) return
-    setValue(
-      (currentValue - 1).toString() +
-      ` ${currentValue === 2 ? 'year' : 'years'}`
-    )
-  }
+    const currentValue = parseInt(value);
+    if (currentValue < 2) return;
+    setValue((currentValue - 1).toString() + ` ${currentValue === 2 ? "year" : "years"}`);
+  };
 
   return (
     <InputWrapper {...props}>
@@ -167,33 +165,25 @@ export const Input = ({
         value={value}
         placeholder={placeholder}
         onChange={(e) => setValue(e.target.value)}
-        disabled={type === 'number' || disabled}
+        disabled={type === "number" || disabled}
       />
 
-      {type === 'text' && isValid !== undefined && (
+      {type === "text" && isValid !== undefined && (
         <ValidationIconWrapper isValid={isValid}>
           {isValid ? <CheckIcon /> : <CrossIcon />}
         </ValidationIconWrapper>
       )}
 
-      {type === 'number' && (
+      {type === "number" && (
         <Counters>
-          <Counter
-            type="button"
-            disabled={parseInt(value) < 2}
-            onClick={() => handleDecrement()}
-          >
-            <span style={{ transform: 'translateY(-0.0625rem)' }}>–</span>
+          <Counter type="button" disabled={parseInt(value) < 2} onClick={() => handleDecrement()}>
+            <span style={{ transform: "translateY(-0.0625rem)" }}>–</span>
           </Counter>
-          <Counter
-            type="button"
-            disabled={parseInt(value) > 9}
-            onClick={() => handleIncrement()}
-          >
-            <span style={{ transform: 'translateY(0.03125rem)' }}>+</span>
+          <Counter type="button" disabled={parseInt(value) > 9} onClick={() => handleIncrement()}>
+            <span style={{ transform: "translateY(0.03125rem)" }}>+</span>
           </Counter>
         </Counters>
       )}
     </InputWrapper>
-  )
-}
+  );
+};
