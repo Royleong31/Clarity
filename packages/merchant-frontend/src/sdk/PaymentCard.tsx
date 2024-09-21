@@ -22,9 +22,11 @@ import { useEffect, useState } from "react";
 import Logo from "../assets/logo.svg";
 
 import axios from "axios";
+import Header from "./Header";
 
 export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
-  const [currency, setCurrency] = useState<keyof typeof currencyToAddress>("ETH");
+  const [currency, setCurrency] =
+    useState<keyof typeof currencyToAddress>("ETH");
 
   const [amount, setAmount] = useState(0);
 
@@ -77,54 +79,59 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
   }, []);
 
   return (
-    <Card className="w-md">
-      <CardHeader className="pb-2">
-        <CardTitle>Make Payment</CardTitle>
-        <CardDescription>Select your currency and network.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form>
-          <div className="grid w-full items-center gap-4">
-            <div className="flex justify-between w-full">
-              <DynamicWidget />
-            </div>
+    <>
+      <Header />
+      <Card className="w-md">
+        <CardHeader className="pb-2">
+          <CardTitle>Make Payment</CardTitle>
+          <CardDescription>Select your currency and network.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form>
+            <div className="grid w-full items-center gap-4">
+              <div className="flex justify-between w-full">
+                <DynamicWidget />
+              </div>
 
-            <div className="flex flex-col space-y-1.5 w-full">
-              <Label htmlFor="framework">Pay With</Label>
-              <Select
-                defaultValue="ETH"
-                onValueChange={(e) => setCurrency(e as keyof typeof currencyToAddress)}
-              >
-                <SelectTrigger id="framework">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent position="popper">
-                  <SelectItem value="ETH">ETH</SelectItem>
-                  <SelectItem value="BTC">BTC</SelectItem>
-                  <SelectItem value="USDc">USDc</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+              <div className="flex flex-col space-y-1.5 w-full">
+                <Label htmlFor="framework">Pay With</Label>
+                <Select
+                  defaultValue="ETH"
+                  onValueChange={(e) =>
+                    setCurrency(e as keyof typeof currencyToAddress)
+                  }
+                >
+                  <SelectTrigger id="framework">
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent position="popper">
+                    <SelectItem value="ETH">ETH</SelectItem>
+                    <SelectItem value="BTC">BTC</SelectItem>
+                    <SelectItem value="USDc">USDc</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Pay (Maximum Amount)</Label>
-              <div>
-                {amount} {currency}
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Pay (Maximum Amount)</Label>
+                <div>
+                  {amount} {currency}
+                </div>
               </div>
             </div>
+          </form>
+          <div className="text-xs text-grey-400 flex items-center mt-2">
+            <CircleAlertIcon className="w-4 mr-1 inline-block " />
+            Quote will refresh every 30s
           </div>
-        </form>
-        <div className="text-xs text-grey-400 flex items-center mt-2">
-          <CircleAlertIcon className="w-4 mr-1 inline-block " />
-          Quote will refresh every 30s
-        </div>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button className="w-full">
-          <img src={Logo} alt="logo" className="w-4 h-4 mr-2" />
-          Pay with Clarity
-        </Button>
-      </CardFooter>
-    </Card>
+        </CardContent>
+        <CardFooter className="flex justify-between">
+          <Button className="w-full">
+            <img src={Logo} alt="logo" className="w-4 h-4 mr-2" />
+            Pay with Clarity
+          </Button>
+        </CardFooter>
+      </Card>
+    </>
   );
 }
