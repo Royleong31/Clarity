@@ -21,9 +21,7 @@ export default function StarRating({ rating, setRating }: StarRatingProps) {
           key={star}
           variant="ghost"
           size="sm"
-          className={`p-0 ${
-            (hover || rating) >= star ? "text-yellow-400" : "text-gray-300"
-          }`}
+          className={`p-0 ${(hover || rating) >= star ? "text-yellow-400" : "text-gray-300"}`}
           onMouseEnter={() => setHover(star)}
           onMouseLeave={() => setHover(0)}
           onClick={() => handleRating(star)}

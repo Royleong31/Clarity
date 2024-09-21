@@ -36,6 +36,11 @@ const getNounsImage = (addresses: string[]) => {
   return addressToImage;
 };
 
+const addressToEns: Record<string, string> = {
+  "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee": "Unpaid",
+  "0x8e9368e7800fc560a6fa686af07187e08da201e7": "matthew.ens",
+};
+
 function shortenEthereumAddress(
   address: string,
   startLength: number = 5,
@@ -72,13 +77,19 @@ const Transaction = ({
           <img className="h-12 w-auto" src={`/images/nouns/${profilePic}`} alt="profileimage" />
           <div className="font-medium ml-2 flex justify-start">
             <a
-              href={`https://etherscan.io/address/${payee}`}
+              href={`https://sepolia.etherscan.io/address/${payee}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-black underline flex items-center"
+              className={`text-black ${
+                payee !== "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+                  ? "underline"
+                  : "text-gray-500"
+              } flex items-center`}
             >
-              {shortenEthereumAddress(payee)}
-              <ArrowUpRight className="h-6" />
+              {addressToEns[payee] || shortenEthereumAddress(payee)}
+              {payee !== "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" && (
+                <ArrowUpRight className="h-6" />
+              )}
             </a>
           </div>
         </div>
@@ -88,31 +99,43 @@ const Transaction = ({
       </TableCell>
       <TableCell className="text-right">
         <div className="flex flex-col justify-end ">
-          <div className="flex justify-end items-center">
-            <strong>Payment: </strong>
-            <a
-              href={`https://sepolia.etherscan.io/tx/${paymentHash}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-black underline flex items-center"
-            >
-              {shortenEthereumAddress(paymentHash)}
-              <ArrowUpRight className="h-6" /> {/* Add margin to the left of the icon */}
-            </a>
-          </div>
+          {paymentHash ? (
+            <div className="flex justify-end items-center">
+              <>
+                <strong>Payment: </strong>
+                <a
+                  href={`https://sepolia.etherscan.io/tx/${paymentHash}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-black underline flex items-center"
+                >
+                  {shortenEthereumAddress(paymentHash)}
+                  <ArrowUpRight className="h-6" />
+                </a>
+              </>
+            </div>
+          ) : (
+            <p>-</p>
+          )}
 
-          <div className="flex justify-end items-center">
-            <strong>Review: </strong>
-            <a
-              href={`https://sepolia.etherscan.io/tx/${reviewHash}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-black underline flex items-center"
-            >
-              {shortenEthereumAddress(reviewHash)}
-              <ArrowUpRight className="h-6" /> {/* Add margin to the left of the icon */}
-            </a>
-          </div>
+          {reviewHash ? (
+            <div className="flex justify-end items-center">
+              <>
+                <strong>Review: </strong>
+                <a
+                  href={`https://sepolia.etherscan.io/tx/${reviewHash}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-black underline flex items-center"
+                >
+                  {shortenEthereumAddress(reviewHash)}
+                  <ArrowUpRight className="h-6" />
+                </a>
+              </>
+            </div>
+          ) : (
+            <p>-</p>
+          )}
         </div>
       </TableCell>
     </TableRow>

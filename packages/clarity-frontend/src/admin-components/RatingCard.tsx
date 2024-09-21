@@ -65,11 +65,16 @@ function RatingCard({ rating }: { rating: number }) {
           <path d="M12 .587l3.668 7.568 8.322 1.207-6.01 5.835 1.415 8.284L12 18.896l-7.395 3.88L6.02 15.202l-6.01-5.835 8.322-1.207z" />
         </svg>
       </CardHeader>
+
       <CardContent>
-        <div className="flex space-x-1">
-          {starVal.map((value, index) => (
-            <PartialStar key={index} fillPercentage={value} />
-          ))}
+        <div className="flex justify-between">
+          <div className="flex space-x-1">
+            {starVal.map((value, index) => (
+              <PartialStar key={index} fillPercentage={value} />
+            ))}
+          </div>
+
+          <p className="font-bold text-lg text-gray-900">{rating.toFixed(2)}</p>
         </div>
       </CardContent>
     </Card>
