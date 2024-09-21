@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useRootState } from "@/hooks/useRootState";
 
 export default function ReviewCompletedCard() {
-  const { setRootState } = useRootState();
+  const { rootState } = useRootState();
   return (
     <>
       <Header />
@@ -21,11 +21,11 @@ export default function ReviewCompletedCard() {
         <CardContent>
           <div className="text-xs mb-2">Transaction Hash:</div>
           <a
-            href="https://www.google.com"
+            href={`{https://sepolia.etherscan.io/tx/${rootState.paymentTransactionHash}}`}
             target="_blank"
             className="text-xs flex items-center w-full justify-between border border-black rounded-lg px-2 py-1"
           >
-            0x2133423492489339430434 <ExternalLinkIcon className="w-4" />
+            {rootState.reviewTransactionHash} <ExternalLinkIcon className="w-4" />
           </a>
           <div className="text-xs text-grey-400 flex items-center mt-2">
             <CircleAlertIcon className="w-4 mr-1 inline-block " />
