@@ -25,15 +25,15 @@ export default $config({
       merchantBackendUrl: merchantApi.api.url,
     };
   },
-  console: {
-    autodeploy: {
-      target(event) {
-        if (event.type === "branch" && event.branch === "main" && event.action === "pushed") {
-          return {
-            stage: "DEV",
-          };
-        }
-      },
-    },
-  },
+  // console: {
+  //   autodeploy: {
+  //     target(event) {
+  //       if (event.type === "branch" && event.branch === "main" && event.action === "pushed") {
+  //         return {
+  //           stage: "DEV",
+  //         };
+  //       }
+  //     },
+  //   },
+  // },
 });

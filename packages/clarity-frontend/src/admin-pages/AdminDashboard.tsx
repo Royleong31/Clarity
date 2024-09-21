@@ -5,22 +5,33 @@ import PastTransactionCard from "../admin-components/PastTransactionCard";
 import { getReviews } from "../sign-protocol/getReviews";
 import { useEffect, useState } from "react";
 
-function AdminDashboard() {
-  // const [reviews, setReviews] = useState([]);
-  // useEffect(() => {
-  //   const res = getReviews();
-  //   setReviews(res);
-  // }, []);
+interface Review {
+  ratings: number;
+  comment: string;
+}
 
-  // function calculateAverage(data) {
-  //   if (data.length === 0) return 0; // Return 0 if the array is empty
-  //   let total = 0;
-  //   console.log(data);
-  //   data.forEach((el) => {
-  //     total += el.ratings;
-  //   });
-  //   return total / data.length;
-  // }
+function AdminDashboard() {
+  const [reviews, setReviews] = useState<Review[]>([]);
+  useEffect(() => {
+    const fetchReviews = async () => {
+      const res = await getReviews();
+      setReviews(res);
+      
+    };
+    fetchReviews();
+  }, []);
+
+  function calculateAverage(data:Review[]) {
+    if (data.length === 0) return 0; // Return 0 if the array is empty
+    let total = 0;
+    console.log(data);
+    data.forEach((el) => {
+      total += el.ratings;
+    });
+    return total / data.length;
+  }
+
+  const averageRating = calculateAverage(reviews);
 
   return (
     <div>
@@ -34,7 +45,7 @@ function AdminDashboard() {
 
         <div className="max-w-md flex flex-col space-y-4 mt-4 w-full min-w-[320px] md:min-w-[720px]">
           <RevenueCard />
-          <RatingCard rating={5} />
+          <RatingCard rating={averageRating} />
           <PastTransactionCard />
         </div>
       </div>
