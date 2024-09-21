@@ -17,10 +17,11 @@ import {
 } from "@worldcoin/idkit";
 import { useRootState } from "@/hooks/useRootState";
 
-
 interface PaymentCompletedCardProps {
   onSuccess: () => void;
 }
+
+import axios from "axios";
 
 const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
   onSuccess,
@@ -29,9 +30,19 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
   const [comments, setComments] = useState("");
   const { setRootState } = useRootState();
 
-  const handleVerify = (result: ISuccessResult) => {
+  const handleVerify = async (result: ISuccessResult) => {
     // TODO call backend to verify the proof
     console.log("verifying proof", result);
+    const res = await axios.get(
+      import.meta.env.VITE_PUBLIC_CLARITY_API_URL +
+        "/verify-world-id-proof?proof=" +
+        result.proof +
+        "&merkleRoot=" +
+        result.merkle_root +
+        "&nullifierHash=" +
+        result.nullifier_hash
+    );
+    console.log("proof verified", res);
   };
 
   const onWIDSuccess = (result: ISuccessResult) => {
