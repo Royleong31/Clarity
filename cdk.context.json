@@ -1,0 +1,10 @@
+{
+  "hosted-zone:account=211125608117:domainName=example.com:region=us-east-1": {
+    "Id": "/hostedzone/Z037813014L2Q4NSKB9H6",
+    "Name": "example.com."
+  },
+  "hosted-zone:account=211125608117:domainName=example.com:region=ap-southeast-1": {
+    "Id": "/hostedzone/Z037813014L2Q4NSKB9H6",
+    "Name": "example.com."
+  }
+}

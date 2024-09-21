@@ -1,0 +1,25 @@
+# dependencies
+node_modules
+/node_modules
+
+# sst
+.sst
+.build
+
+# opennext
+.open-next
+
+.docker-volumes
+
+# misc
+.DS_Store
+
+.env
+.env.local
+.env.dev
+
+# local env files
+.env*.local
+
+# editor files
+.vim

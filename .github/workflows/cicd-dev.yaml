@@ -1,0 +1,45 @@
+name: Run migrations and deploy DEV stage
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-migrations:
+    runs-on: ubuntu-latest
+    environment: DEV
+
+    env:
+      DATABASE_CONNECTION_STRING: ${{ secrets.DATABASE_CONNECTION_STRING }}
+      PORT: 5432
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.13"
+
+      - name: Cache Node Modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install and build all dependencies
+        run: pnpm install
+
+      - name: Set up ts-node
+        run: npm install -g ts-node
+
+      #      Make sure DATABASE_CONNECTION_STRING is set in the secrets of the repository
+      - name: Run migrations
+        run: pnpm migration:run
