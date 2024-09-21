@@ -5,6 +5,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage";
 import ClarityRootComponent from "./sdk/ClarityRootComponent";
 import ProfileCard from "./sdk/ProfileCard";
+import { Toaster } from "@/components/ui/toaster"
+import { ToastProvider } from "@radix-ui/react-toast";
 const router = createBrowserRouter([
   {
     path: "*",
@@ -36,6 +38,7 @@ const router = createBrowserRouter([
 const App = () => {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <Toaster />
       {/* <ModeToggle /> */}
       <RouterProvider router={router} />
       {/* <ClarityRootComponent /> */}

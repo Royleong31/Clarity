@@ -101,6 +101,14 @@ export function AuthConsumer() {
     read();
   }, [rootState]);
 
+  // Check local storage for root state
+  useEffect(() => {
+    const localState = localStorage.getItem("rootState");
+    if (localState) {
+      setRootState((prev) => JSON.parse(localState));
+    }
+  }, [rootState]);
+
   if (!sdkHasLoaded) {
     return <LoadingPage />;
   }
@@ -110,7 +118,14 @@ export function AuthConsumer() {
   }
 
   if (!isLoggedIn) {
+    // Save root state to local storage
+    localStorage.setItem("rootState", JSON.stringify(rootState));
     return <WalletComponent />;
+  }
+
+  // remove local storage
+  if (localStorage.getItem("rootState")) {
+    localStorage.removeItem("rootState");
   }
 
   if (orderId && !paid) {
