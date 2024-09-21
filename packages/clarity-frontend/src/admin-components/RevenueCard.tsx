@@ -18,7 +18,7 @@ function RevenueCard() {
           <div className="flex justify-between">
             <div className="">
               <div className="text-2xl font-bold text-left">
-                ${data?.revenue ? Number(data?.revenue).toFixed(2) : ""}
+                ${data?.revenue ? Number(data?.revenue / 1_000_000).toFixed(2) : ""}
               </div>
             </div>
           </div>

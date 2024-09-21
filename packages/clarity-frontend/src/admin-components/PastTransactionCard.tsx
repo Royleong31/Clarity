@@ -11,8 +11,6 @@ import {
   TableRow,
 } from "../components/ui/table";
 
-import React, { useEffect, useState } from "react";
-
 import { useOrdersQuery } from "../generated/graphql";
 
 interface TransactionProps {
@@ -61,7 +59,6 @@ const Transaction = ({
   reviewHash,
   createdDate,
 }: TransactionProps) => {
-  console.log({ createdDate });
   return (
     <TableRow>
       <TableCell>
@@ -123,8 +120,7 @@ const Transaction = ({
 };
 
 function PastTransactionCard() {
-  const [address, setAddress] = useState("");
-  const { data: ordersData, loading: orderLoading } = useOrdersQuery();
+  const { data: ordersData } = useOrdersQuery();
 
   console.log(ordersData);
   const addresses = ordersData?.orders.map((order) => order.payee) ?? [];
