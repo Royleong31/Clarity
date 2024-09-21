@@ -19,6 +19,15 @@ export const contract = c.router({
     summary: "Dummy home",
   },
 
+  verifyWorldIdProof: {
+    method: "GET",
+    path: "/verify-world-id-proof",
+    query: z.object({ proof: z.string(), merkleRoot: z.string(), nullifierHash: z.string() }),
+    responses: {
+      200: z.boolean(),
+    },
+  },
+
   createOrder: {
     method: "POST",
     path: "/create-order",
