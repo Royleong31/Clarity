@@ -7,7 +7,7 @@ import { api as merchantApi } from "./api";
 const region = aws.getRegionOutput().name;
 
 const VITE_DYNAMIC_ENV_ID = process.env.VITE_DYNAMIC_ENV_ID;
-const VITE_PAYMASTER_KEY = process.env.VITE_PAYMASTER_KEY;
+const VITE_PAYMASTER_KEY = process.env.VITE_PAYMASTER_KEY; 
 const VITE_BUNDLER_KEY = process.env.VITE_BUNDLER_KEY;
 const VITE_1INCH_KEY = process.env.VITE_1INCH_KEY;
 const VITE_WID = process.env.VITE_WID;

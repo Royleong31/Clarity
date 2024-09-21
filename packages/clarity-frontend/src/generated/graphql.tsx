@@ -25,6 +25,56 @@ export enum Aggregation_Interval {
   DAY = 'day'
 }
 
+export type AttestationInfo = {
+  __typename?: 'AttestationInfo';
+  id: Scalars['ID'];
+  reviewAttestationId: Scalars['BigInt'];
+  nullifierHash: Scalars['BigInt'];
+  revoked: Scalars['Boolean'];
+};
+
+export type AttestationInfo_Filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  reviewAttestationId?: InputMaybe<Scalars['BigInt']>;
+  reviewAttestationId_not?: InputMaybe<Scalars['BigInt']>;
+  reviewAttestationId_gt?: InputMaybe<Scalars['BigInt']>;
+  reviewAttestationId_lt?: InputMaybe<Scalars['BigInt']>;
+  reviewAttestationId_gte?: InputMaybe<Scalars['BigInt']>;
+  reviewAttestationId_lte?: InputMaybe<Scalars['BigInt']>;
+  reviewAttestationId_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  reviewAttestationId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  nullifierHash?: InputMaybe<Scalars['BigInt']>;
+  nullifierHash_not?: InputMaybe<Scalars['BigInt']>;
+  nullifierHash_gt?: InputMaybe<Scalars['BigInt']>;
+  nullifierHash_lt?: InputMaybe<Scalars['BigInt']>;
+  nullifierHash_gte?: InputMaybe<Scalars['BigInt']>;
+  nullifierHash_lte?: InputMaybe<Scalars['BigInt']>;
+  nullifierHash_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  nullifierHash_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  revoked?: InputMaybe<Scalars['Boolean']>;
+  revoked_not?: InputMaybe<Scalars['Boolean']>;
+  revoked_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  revoked_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<AttestationInfo_Filter>>>;
+  or?: InputMaybe<Array<InputMaybe<AttestationInfo_Filter>>>;
+};
+
+export enum AttestationInfo_OrderBy {
+  ID = 'id',
+  REVIEWATTESTATIONID = 'reviewAttestationId',
+  NULLIFIERHASH = 'nullifierHash',
+  REVOKED = 'revoked'
+}
+
 export type BlockChangedFilter = {
   number_gte: Scalars['Int'];
 };
@@ -67,6 +117,82 @@ export type Bundle_Filter = {
 export enum Bundle_OrderBy {
   ID = 'id',
   SYNCINGINDEX = 'syncingIndex'
+}
+
+export type HookManager = {
+  __typename?: 'HookManager';
+  id: Scalars['ID'];
+  worldId: Scalars['String'];
+  externalNullifier: Scalars['BigInt'];
+  totalPoints: Scalars['BigInt'];
+  totalAttestations: Scalars['BigInt'];
+};
+
+export type HookManager_Filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  worldId?: InputMaybe<Scalars['String']>;
+  worldId_not?: InputMaybe<Scalars['String']>;
+  worldId_gt?: InputMaybe<Scalars['String']>;
+  worldId_lt?: InputMaybe<Scalars['String']>;
+  worldId_gte?: InputMaybe<Scalars['String']>;
+  worldId_lte?: InputMaybe<Scalars['String']>;
+  worldId_in?: InputMaybe<Array<Scalars['String']>>;
+  worldId_not_in?: InputMaybe<Array<Scalars['String']>>;
+  worldId_contains?: InputMaybe<Scalars['String']>;
+  worldId_contains_nocase?: InputMaybe<Scalars['String']>;
+  worldId_not_contains?: InputMaybe<Scalars['String']>;
+  worldId_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  worldId_starts_with?: InputMaybe<Scalars['String']>;
+  worldId_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  worldId_not_starts_with?: InputMaybe<Scalars['String']>;
+  worldId_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  worldId_ends_with?: InputMaybe<Scalars['String']>;
+  worldId_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  worldId_not_ends_with?: InputMaybe<Scalars['String']>;
+  worldId_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  externalNullifier?: InputMaybe<Scalars['BigInt']>;
+  externalNullifier_not?: InputMaybe<Scalars['BigInt']>;
+  externalNullifier_gt?: InputMaybe<Scalars['BigInt']>;
+  externalNullifier_lt?: InputMaybe<Scalars['BigInt']>;
+  externalNullifier_gte?: InputMaybe<Scalars['BigInt']>;
+  externalNullifier_lte?: InputMaybe<Scalars['BigInt']>;
+  externalNullifier_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  externalNullifier_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalPoints?: InputMaybe<Scalars['BigInt']>;
+  totalPoints_not?: InputMaybe<Scalars['BigInt']>;
+  totalPoints_gt?: InputMaybe<Scalars['BigInt']>;
+  totalPoints_lt?: InputMaybe<Scalars['BigInt']>;
+  totalPoints_gte?: InputMaybe<Scalars['BigInt']>;
+  totalPoints_lte?: InputMaybe<Scalars['BigInt']>;
+  totalPoints_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalPoints_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalAttestations?: InputMaybe<Scalars['BigInt']>;
+  totalAttestations_not?: InputMaybe<Scalars['BigInt']>;
+  totalAttestations_gt?: InputMaybe<Scalars['BigInt']>;
+  totalAttestations_lt?: InputMaybe<Scalars['BigInt']>;
+  totalAttestations_gte?: InputMaybe<Scalars['BigInt']>;
+  totalAttestations_lte?: InputMaybe<Scalars['BigInt']>;
+  totalAttestations_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalAttestations_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<HookManager_Filter>>>;
+  or?: InputMaybe<Array<InputMaybe<HookManager_Filter>>>;
+};
+
+export enum HookManager_OrderBy {
+  ID = 'id',
+  WORLDID = 'worldId',
+  EXTERNALNULLIFIER = 'externalNullifier',
+  TOTALPOINTS = 'totalPoints',
+  TOTALATTESTATIONS = 'totalAttestations'
 }
 
 export type Manager = {
@@ -684,8 +810,12 @@ export enum Payee_OrderBy {
 
 export type Query = {
   __typename?: 'Query';
+  attestationInfo?: Maybe<AttestationInfo>;
+  attestationInfos: Array<AttestationInfo>;
   bundle?: Maybe<Bundle>;
   bundles: Array<Bundle>;
+  hookManager?: Maybe<HookManager>;
+  hookManagers: Array<HookManager>;
   manager?: Maybe<Manager>;
   managers: Array<Manager>;
   merchant?: Maybe<Merchant>;
@@ -700,8 +830,28 @@ export type Query = {
   transactions: Array<Transaction>;
   user?: Maybe<User>;
   users: Array<User>;
+  worldIdUser?: Maybe<WorldIdUser>;
+  worldIdUsers: Array<WorldIdUser>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
+};
+
+
+export type QueryAttestationInfoArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_Height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryAttestationInfosArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<AttestationInfo_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<AttestationInfo_Filter>;
+  block?: InputMaybe<Block_Height>;
+  subgraphError?: _SubgraphErrorPolicy_;
 };
 
 
@@ -718,6 +868,24 @@ export type QueryBundlesArgs = {
   orderBy?: InputMaybe<Bundle_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<Bundle_Filter>;
+  block?: InputMaybe<Block_Height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryHookManagerArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_Height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryHookManagersArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<HookManager_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<HookManager_Filter>;
   block?: InputMaybe<Block_Height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -849,14 +1017,36 @@ export type QueryUsersArgs = {
 };
 
 
+export type QueryWorldIdUserArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_Height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryWorldIdUsersArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<WorldIdUser_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<WorldIdUser_Filter>;
+  block?: InputMaybe<Block_Height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type Query_MetaArgs = {
   block?: InputMaybe<Block_Height>;
 };
 
 export type Subscription = {
   __typename?: 'Subscription';
+  attestationInfo?: Maybe<AttestationInfo>;
+  attestationInfos: Array<AttestationInfo>;
   bundle?: Maybe<Bundle>;
   bundles: Array<Bundle>;
+  hookManager?: Maybe<HookManager>;
+  hookManagers: Array<HookManager>;
   manager?: Maybe<Manager>;
   managers: Array<Manager>;
   merchant?: Maybe<Merchant>;
@@ -871,8 +1061,28 @@ export type Subscription = {
   transactions: Array<Transaction>;
   user?: Maybe<User>;
   users: Array<User>;
+  worldIdUser?: Maybe<WorldIdUser>;
+  worldIdUsers: Array<WorldIdUser>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
+};
+
+
+export type SubscriptionAttestationInfoArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_Height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionAttestationInfosArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<AttestationInfo_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<AttestationInfo_Filter>;
+  block?: InputMaybe<Block_Height>;
+  subgraphError?: _SubgraphErrorPolicy_;
 };
 
 
@@ -889,6 +1099,24 @@ export type SubscriptionBundlesArgs = {
   orderBy?: InputMaybe<Bundle_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<Bundle_Filter>;
+  block?: InputMaybe<Block_Height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionHookManagerArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_Height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionHookManagersArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<HookManager_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<HookManager_Filter>;
   block?: InputMaybe<Block_Height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -1015,6 +1243,24 @@ export type SubscriptionUsersArgs = {
   orderBy?: InputMaybe<User_OrderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<User_Filter>;
+  block?: InputMaybe<Block_Height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionWorldIdUserArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_Height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionWorldIdUsersArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<WorldIdUser_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<WorldIdUser_Filter>;
   block?: InputMaybe<Block_Height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -1246,6 +1492,72 @@ export enum User_OrderBy {
   TYPE = 'type'
 }
 
+export type WorldIdUser = {
+  __typename?: 'WorldIdUser';
+  id: Scalars['ID'];
+  nullifierHash: Scalars['BigInt'];
+  collector: Scalars['String'];
+  points: Scalars['BigInt'];
+};
+
+export type WorldIdUser_Filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  nullifierHash?: InputMaybe<Scalars['BigInt']>;
+  nullifierHash_not?: InputMaybe<Scalars['BigInt']>;
+  nullifierHash_gt?: InputMaybe<Scalars['BigInt']>;
+  nullifierHash_lt?: InputMaybe<Scalars['BigInt']>;
+  nullifierHash_gte?: InputMaybe<Scalars['BigInt']>;
+  nullifierHash_lte?: InputMaybe<Scalars['BigInt']>;
+  nullifierHash_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  nullifierHash_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  collector?: InputMaybe<Scalars['String']>;
+  collector_not?: InputMaybe<Scalars['String']>;
+  collector_gt?: InputMaybe<Scalars['String']>;
+  collector_lt?: InputMaybe<Scalars['String']>;
+  collector_gte?: InputMaybe<Scalars['String']>;
+  collector_lte?: InputMaybe<Scalars['String']>;
+  collector_in?: InputMaybe<Array<Scalars['String']>>;
+  collector_not_in?: InputMaybe<Array<Scalars['String']>>;
+  collector_contains?: InputMaybe<Scalars['String']>;
+  collector_contains_nocase?: InputMaybe<Scalars['String']>;
+  collector_not_contains?: InputMaybe<Scalars['String']>;
+  collector_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  collector_starts_with?: InputMaybe<Scalars['String']>;
+  collector_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  collector_not_starts_with?: InputMaybe<Scalars['String']>;
+  collector_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  collector_ends_with?: InputMaybe<Scalars['String']>;
+  collector_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  collector_not_ends_with?: InputMaybe<Scalars['String']>;
+  collector_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  points?: InputMaybe<Scalars['BigInt']>;
+  points_not?: InputMaybe<Scalars['BigInt']>;
+  points_gt?: InputMaybe<Scalars['BigInt']>;
+  points_lt?: InputMaybe<Scalars['BigInt']>;
+  points_gte?: InputMaybe<Scalars['BigInt']>;
+  points_lte?: InputMaybe<Scalars['BigInt']>;
+  points_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  points_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<WorldIdUser_Filter>>>;
+  or?: InputMaybe<Array<InputMaybe<WorldIdUser_Filter>>>;
+};
+
+export enum WorldIdUser_OrderBy {
+  ID = 'id',
+  NULLIFIERHASH = 'nullifierHash',
+  COLLECTOR = 'collector',
+  POINTS = 'points'
+}
+
 export type _Block_ = {
   __typename?: '_Block_';
   /** The hash of the block */
@@ -1289,7 +1601,9 @@ export type MerchantQueryVariables = Exact<{
 
 export type MerchantQuery = { __typename?: 'Query', merchant?: { __typename?: 'Merchant', completedOrderCount: any, reviewedOrderCount: any, revenue: any, address: string, merchantId: number, id: string, withdrawn: any } | null };
 
-export type OrdersQueryVariables = Exact<{ [key: string]: never; }>;
+export type OrdersQueryVariables = Exact<{
+  where?: InputMaybe<Order_Filter>;
+}>;
 
 
 export type OrdersQuery = { __typename?: 'Query', orders: Array<{ __typename?: 'Order', id: string, orderId: any, merchantId: number, payee: string, amount: any, settled: boolean, reviewAttestationId: any, createdTimestamp: any, reviewTx?: { __typename?: 'Transaction', id: string } | null, paymentTx?: { __typename?: 'Transaction', id: string } | null }> };
@@ -1337,8 +1651,8 @@ export type MerchantQueryHookResult = ReturnType<typeof useMerchantQuery>;
 export type MerchantLazyQueryHookResult = ReturnType<typeof useMerchantLazyQuery>;
 export type MerchantQueryResult = Apollo.QueryResult<MerchantQuery, MerchantQueryVariables>;
 export const OrdersDocument = gql`
-    query Orders {
-  orders {
+    query Orders($where: Order_filter) {
+  orders(where: $where) {
     id
     orderId
     merchantId
@@ -1369,6 +1683,7 @@ export const OrdersDocument = gql`
  * @example
  * const { data, loading, error } = useOrdersQuery({
  *   variables: {
+ *      where: // value for 'where'
  *   },
  * });
  */

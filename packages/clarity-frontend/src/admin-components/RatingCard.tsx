@@ -40,7 +40,6 @@ function RatingCard({ rating }: { rating: number }) {
   const starVal = [0, 0, 0, 0, 0];
 
   for (let i = 0; i < starVal.length; i++) {
-    console.log("i", i, "rating", rating, rating - i);
     if (rating - i >= 1) {
       starVal[i] = 100;
     } else {

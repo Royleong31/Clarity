@@ -1,9 +1,5 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import {
-  BadgeCheckIcon,
-  ExternalLinkIcon,
-  CircleAlertIcon,
-} from "lucide-react";
+import { BadgeCheckIcon, ExternalLinkIcon, CircleAlertIcon } from "lucide-react";
 import Header from "./Header";
 import { Button } from "@/components/ui/button";
 import { useRootState } from "@/hooks/useRootState";
@@ -24,14 +20,12 @@ export default function ReviewCompletedCard() {
         <CardContent>
           <div className="text-xs mb-2">Transaction Hash:</div>
           <a
-            href={`https://sepolia.basescan.org/tx/${rootState.paymentTransactionHash}`}
+            href={`{https://sepolia.basescan.org/tx/${rootState.paymentTransactionHash}}`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs flex items-center w-full justify-between border border-black rounded-lg px-2 py-1"
           >
-            <p className="text-ellipsis overflow-hidden">
-              {rootState.reviewTransactionHash}{" "}
-            </p>
+            <p className="text-ellipsis overflow-hidden">{rootState.reviewTransactionHash} </p>
             <ExternalLinkIcon className="w-4" />
           </a>
           <div className="text-xs text-grey-400 flex items-center mt-2">

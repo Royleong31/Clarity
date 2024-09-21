@@ -27,7 +27,7 @@ function stringToBytes32(source: string) {
   return hexlify(bytes32);
 }
 
-const provider = new JsonRpcProvider(`https://sepolia.infura.io/v3/${Resource.InfuraApiKey.value}`);
+const provider = new JsonRpcProvider("https://sepolia.base.org");
 
 const wallet = new Wallet(Resource.PrivateKey.value, provider);
 export const contract = new Contract(Resource.ContractAddress.value, abi, wallet);
