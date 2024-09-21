@@ -1,0 +1,14 @@
+version: "3.5"
+
+services:
+  clarity-ethsg-postgres:
+    container_name: clarity-ethsg-postgres
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    volumes:
+      - ./.docker-volumes/.postgres:/data/postgres
+    ports:
+      - "5432:5432"
