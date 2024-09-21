@@ -3,12 +3,16 @@ import AdminNavbar from '../admin-components/AdminNavbar';
 import MerchantApiCard from '../admin-components/MerchantApiCard';
 import MerchantSignupCard from '../admin-components/MerchantSignupCard';
 import { Button } from '../components/ui/button';
+import EnsCard from '../admin-components/EnsCard';
+import { useState } from 'react';
 
 function AdminSignup() {
+    const [address, setAddress] = useState('')
+
     const navigate = useNavigate();
 
     const handleSignUp = () => {
-        navigate('/admin');
+        navigate('/');
     };
 
     return (
@@ -19,7 +23,8 @@ function AdminSignup() {
                 <p className="mt-2 text-gray-600">Hi Merchant! We would like to get to know you and your company better!</p>
 
                 <div className="max-w-md flex flex-col space-y-4 mt-4 w-full min-w-[320px] md:min-w-[720px]">
-                    <MerchantSignupCard />
+                    <MerchantSignupCard setAddress={setAddress} address={address} />
+                    <EnsCard onComplete={(val) => setAddress(val)} />
                     <MerchantApiCard />
                     <Button onClick={handleSignUp}>Sign up</Button>
                 </div>

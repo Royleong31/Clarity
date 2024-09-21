@@ -1,0 +1,18 @@
+query Orders {
+  orders {
+    id
+    orderId
+    merchantId
+    payee
+    amount
+    settled
+    reviewTx {
+      id
+    }
+    paymentTx {
+      id
+    }
+    reviewAttestationId
+    createdTimestamp
+  }
+}

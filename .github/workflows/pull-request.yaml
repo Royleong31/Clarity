@@ -1,0 +1,40 @@
+name: Check Frontend builds work
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-migrations:
+    runs-on: ubuntu-latest
+    environment: DEV
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.13"
+
+      - name: Cache Node Modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-${{ hashFiles('./pnpm-lock.yaml') }}
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install and build all dependencies
+        run: pnpm install
+
+      - name: Build Merchant FE
+        run: cd packages/merchant-frontend && pnpm build
+
+      - name: Build Clarity FE
+        run: cd packages/clarity-frontend && pnpm build

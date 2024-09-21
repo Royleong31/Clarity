@@ -20,7 +20,7 @@ export const api = new sst.aws.ApiGatewayV2("ClarityApi", {
   },
   cors: {
     allowOrigins: ["*"],
-    allowHeaders: ["content-type"],
+    allowHeaders: ["content-type", "authorization"],
     allowMethods: ["*"],
     maxAge: "30 seconds",
   },
