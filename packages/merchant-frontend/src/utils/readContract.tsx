@@ -17,9 +17,7 @@ export const isOrderReviewed = async (orderId: string) => {
     "function isOrderReviewed(string memory rawOrderId) external view returns (bool reviewed)",
   ];
 
-  //   const provider = new ethers.JsonRpcProvider(`https://mainnet.infura.io/v3/${import.meta.env.VITE_INFURA_KEY}`);
   const provider = new ethers.JsonRpcProvider(`https://rpc2.sepolia.org`);
-  //   const evmProviders = useRpcProviders(evmProvidersSelector);
 
   //   const provider = evmProviders.getProviderByChainId(ChainId.SEPOLIA)
   // Create a contract instance
