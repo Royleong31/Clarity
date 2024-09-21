@@ -7,6 +7,7 @@ import {
 import Header from "./Header";
 import { Button } from "@/components/ui/button";
 import { useRootState } from "@/hooks/useRootState";
+import ConfettiExplosion from "react-confetti-explosion";
 
 export default function ReviewCompletedCard() {
   const { rootState, setRootState } = useRootState();
@@ -17,6 +18,7 @@ export default function ReviewCompletedCard() {
       <Card className="w-[350px]">
         <CardHeader className="flex flex-col text-center items-center">
           <BadgeCheckIcon />
+          <ConfettiExplosion />
           <CardTitle>Review Attested!</CardTitle>
         </CardHeader>
         <CardContent>

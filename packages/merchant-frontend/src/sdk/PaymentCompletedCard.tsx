@@ -16,6 +16,7 @@ import {
   VerificationLevel,
   ISuccessResult,
 } from "@worldcoin/idkit";
+import ConfettiExplosion from 'react-confetti-explosion';
 import { useRootState } from "@/hooks/useRootState";
 import { PaymasterMode } from "@biconomy/account";
 import { useSmartWallet } from "@/hooks/useSmartWallet";
@@ -117,6 +118,7 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
   return (
     <Card className="w-[350px]">
       <CardHeader className="flex flex-col text-center items-center">
+        <ConfettiExplosion />
         <BadgeCheckIcon />
         <CardTitle>Payment Completed</CardTitle>
       </CardHeader>
