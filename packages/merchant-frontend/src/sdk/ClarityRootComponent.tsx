@@ -100,6 +100,8 @@ export function AuthConsumer() {
     };
     read();
   }, [rootState]);
+
+  return <PaymentCard onSuccess={paymentSuccess} />; // Here, set order id when done
   if (!sdkHasLoaded) {
     return <LoadingPage />;
   }

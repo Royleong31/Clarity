@@ -36,6 +36,7 @@ import { useRootState } from "@/hooks/useRootState";
 
 import { clarityClient } from "../../../core/src/react-query/clarityClient";
 import Header from "./Header";
+import { get } from "lodash";
 
 export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
   const { mutateAsync } = clarityClient.confirmOrderPayment.useMutation();
@@ -56,27 +57,63 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
   const currencyToAddress = {
     ETH: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
     USDC: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
+    MATIC: "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
+    ONEINCH: "0x111111111117dC0aa78b770fA6A738034120C302"
   };
 
   const currencyToDecimals = {
     ETH: 12,
     USDC: 6,
+    MATIC: 12,
+    ONEINCH: 12,
   };
+
+  useEffect(() => {
+    // console.log("currency", currency);
+    getQuote();
+    getBalance();
+  }, [currency]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       getQuote();
     }, 30000);
-
     // Clean up the interval when the component unmounts
     return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    console.log("fetching new quote");
-    getBalance();
-    getQuote();
   }, [currency]);
+
+  const getQuote = async () => {
+    let price;
+    const currCurrency = currency;
+    setFetchingQuote(true);
+    if (currCurrency === "USDC") {
+      console.log("usdc selected, seeting to 10", currCurrency);
+      setAmount(10);
+    } else {
+      console.log("non usdc selected, seeting to getPrice", currCurrency);
+      price = await getPrice(currencyToAddress[currCurrency], 10);
+      setAmount(price / 10 ** currencyToDecimals[currCurrency]);
+    }
+    setFetchingQuote(false);
+  };
+
+  // useEffect(() => {
+  //   const getQuote = async (currCurrency: keyof typeof currencyToDecimals) => {
+  //     let price;
+  //     setFetchingQuote(true);
+  //     if (currCurrency === "USDC") {
+  //       console.log("usdc selected, seeting to 10", currCurrency);
+  //       setAmount(10);
+  //     } else {
+  //       console.log("non usdc selected, seeting to getPrice", currCurrency);
+  //       price = await getPrice(currencyToAddress[currCurrency], 10);
+  //       setAmount(price / 10 ** currencyToDecimals[currCurrency]);
+  //     }
+  //     setFetchingQuote(false);
+  //   };
+  //   getBalance();
+  //   getQuote(currency);
+  // }, []);
 
   const [fetchingBalance, setFetchingBalance] = useState(false);
 
@@ -151,18 +188,6 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
     });
   };
 
-  const getQuote = async () => {
-    let price;
-    setFetchingQuote(true);
-    if (currency === "USDC") {
-      setAmount(10);
-    } else {
-      price = await getPrice(currencyToAddress[currency], 10);
-      setAmount(price / 10 ** currencyToDecimals[currency]);
-    }
-    setFetchingQuote(false);
-  };
-
   return (
     <>
       <Header />
@@ -181,8 +206,10 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
               <div className="flex flex-col space-y-1.5 w-full">
                 <Label htmlFor="framework">Pay With</Label>
                 <Select
-                  defaultValue="ETH"
-                  onValueChange={(e: "ETH" | "USDC") => setCurrency(e)}
+                  value={currency}
+                  onValueChange={(e: "ETH" | "USDC" | "MATIC") =>
+                    setCurrency(e)
+                  }
                 >
                   <SelectTrigger id="framework">
                     <SelectValue placeholder="Select" />
@@ -190,6 +217,8 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
                   <SelectContent position="popper">
                     <SelectItem value="ETH">ETH</SelectItem>
                     <SelectItem value="USDC">USDC</SelectItem>
+                    <SelectItem value="MATIC">MATIC</SelectItem>
+                    <SelectItem value="ONEINCH">1INCH</SelectItem>
                   </SelectContent>
                 </Select>
                 <div className="text-xs flex justify-between">
