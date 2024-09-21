@@ -5,8 +5,13 @@ import PastTransactionCard from "../admin-components/PastTransactionCard";
 import { getReviews } from "../sign-protocol/getReviews";
 import { useEffect, useState } from "react";
 
+interface Review {
+  ratings: number;
+  comment: string;
+}
+
 function AdminDashboard() {
-  const [reviews, setReviews] = useState([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   useEffect(() => {
     const fetchReviews = async () => {
       const res = await getReviews();
@@ -16,7 +21,7 @@ function AdminDashboard() {
     fetchReviews();
   }, []);
 
-  function calculateAverage(data) {
+  function calculateAverage(data:Review[]) {
     if (data.length === 0) return 0; // Return 0 if the array is empty
     let total = 0;
     console.log(data);
