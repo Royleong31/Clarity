@@ -3,7 +3,7 @@
 export default $config({
   app(input) {
     return {
-      name: "clarity-ethsg",
+      name: "clarity",
       removal: input.stage === "PROD" ? "retain" : "remove",
       home: "aws",
       providers: {
