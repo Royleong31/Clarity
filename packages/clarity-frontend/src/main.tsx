@@ -12,7 +12,7 @@ import { WagmiConfig } from "wagmi";
 import { chains, wagmiClient } from "./providers.ts";
 
 const client = new ApolloClient({
-  uri: "https://api.studio.thegraph.com/query/46716/clarity-test/v0.1.4",
+  uri: "https://api.studio.thegraph.com/query/46716/clarity-test/v0.1.6",
   cache: new InMemoryCache(),
 });
 
