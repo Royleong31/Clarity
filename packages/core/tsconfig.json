@@ -1,0 +1,18 @@
+{
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "paths": {
+      "@clarity/core/*": ["../core/src/*"],
+      "@clarity/merchant-frontend/*": ["../merchant-frontend/src/*"],
+      "@clarity/merchant-backend/*": ["../merchant-backend/src/*"],
+      "@clarity/clarity-backend/*": ["../clarity-backend/src/*"],
+      "@clarity/clarity-frontend/*": ["../clarity-frontend/src/*"]
+    }
+  },
+  "ts-node": {
+    "esm": true
+  }
+}

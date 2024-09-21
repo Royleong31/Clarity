@@ -1,0 +1,6 @@
+query Merchants {
+  merchants {
+    id
+    revenue
+  }
+}

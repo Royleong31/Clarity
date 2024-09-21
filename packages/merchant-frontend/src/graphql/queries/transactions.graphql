@@ -1,0 +1,8 @@
+query Transactions($skip: Int, $first: Int) {
+  transactions(skip: $skip, first: $first) {
+    gasLimit
+    gasPrice
+    timestamp
+    from
+  }
+}

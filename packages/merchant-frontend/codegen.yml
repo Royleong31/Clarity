@@ -1,0 +1,17 @@
+schema:
+  - "https://api.studio.thegraph.com/query/80828/attestatation-test/version/latest"
+documents:
+  - "src/graphql/queries/**/*.graphql"
+  - "src/graphql/mutations/**/*.graphql"
+overwrite: true
+config:
+  sort: false
+  withComponent: false
+  namingConvention:
+    enumValues: change-case-all#upperCase
+generates:
+  src/generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
