@@ -1,5 +1,5 @@
 schema:
-  - "https://api.studio.thegraph.com/query/46716/clarity-test/version/latest"
+  - "https://api.studio.thegraph.com/query/46716/clarity-test/v0.1.4"
 documents:
   - "src/graphql/queries/**/*.graphql"
   - "src/graphql/mutations/**/*.graphql"

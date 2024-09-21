@@ -100,7 +100,6 @@ export function AuthConsumer() {
     };
     read();
   }, [rootState]);
-
   if (!sdkHasLoaded) {
     return <LoadingPage />;
   }

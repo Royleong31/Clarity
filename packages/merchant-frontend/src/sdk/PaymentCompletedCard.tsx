@@ -54,7 +54,7 @@ const PaymentCompletedCard: React.FC<PaymentCompletedCardProps> = ({
         "&nullifierHash=" +
         result.nullifier_hash
     );
-
+    localStorage.setItem("nullifierHash", result.nullifier_hash);
     setRootState((prev) => ({
       ...prev,
       nullifierHash: result.nullifier_hash,
