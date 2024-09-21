@@ -58,17 +58,20 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
     ETH: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
     USDC: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
     MATIC: "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
+    ONEINCH: "0x111111111117dC0aa78b770fA6A738034120C302"
   };
 
   const currencyToDecimals = {
     ETH: 12,
     USDC: 6,
     MATIC: 12,
+    ONEINCH: 12,
   };
 
   useEffect(() => {
     // console.log("currency", currency);
     getQuote();
+    getBalance();
   }, [currency]);
 
   useEffect(() => {
@@ -215,6 +218,7 @@ export default function PaymentCard({ onSuccess }: { onSuccess: () => void }) {
                     <SelectItem value="ETH">ETH</SelectItem>
                     <SelectItem value="USDC">USDC</SelectItem>
                     <SelectItem value="MATIC">MATIC</SelectItem>
+                    <SelectItem value="ONEINCH">1INCH</SelectItem>
                   </SelectContent>
                 </Select>
                 <div className="text-xs flex justify-between">
