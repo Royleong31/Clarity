@@ -1,3 +1,4 @@
+import { Review } from "../admin-pages/AdminDashboard";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 
 const PartialStar = ({
@@ -35,7 +36,7 @@ const PartialStar = ({
   );
 };
 
-function RatingCard({ rating }: { rating: number }) {
+function RatingCard({ rating, reviews }: { rating: number; reviews: Review[] }) {
   // average rating
   const starVal = [0, 0, 0, 0, 0];
 
@@ -74,6 +75,27 @@ function RatingCard({ rating }: { rating: number }) {
           </div>
 
           <p className="font-bold text-lg text-gray-900">{rating.toFixed(2)}</p>
+        </div>
+      </CardContent>
+
+      <CardContent>
+        <CardTitle className="text-lg font-large text-left">Latest 5 reviews</CardTitle>
+
+        <div className="flex justify-between">
+          <div className="flex w-full items-between flex-col">
+            {reviews.slice(0, 5).map((value, index) => (
+              <a
+                target="_blank"
+                href={`https://testnet-scan.sign.global/attestation/${value.id}`}
+                className="flex justify-between hover:text-black text-black"
+                key={value.id}
+              >
+                <p className="underline text-blue-700">{value.comment}</p>
+
+                <p className="text-black">{value.ratings.toFixed(2)}</p>
+              </a>
+            ))}
+          </div>
         </div>
       </CardContent>
     </Card>

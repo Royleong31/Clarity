@@ -18,12 +18,19 @@ export async function getReviews() {
   res.data.data.rows.forEach((row: any) => {
     try {
       const { ratings, comment } = decodeClarityReview(row.data);
-      reviews.push({ ratings, comment });
+
+      reviews.push({
+        ratings,
+        comment,
+        id: row.id,
+        merchant: row.recipients[0],
+        reviewer: row.recipients[1],
+      });
     } catch (_) {
       console.error("Failed to decode review", row.data);
     }
   });
-  console.log("reviews", reviews);
+
   return reviews;
 }
 
