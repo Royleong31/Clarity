@@ -14,6 +14,8 @@ Clarity is a public payment gateway designed to tackle the multibillion-dollar p
 
 ## Overall Contract Architecture
 
+![Clarity architecture](telegram-cloud-photo-size-5-6303078796139544792-y.jpg)
+
 Clarity consists of three main contracts - **(1) `Clarity` (main)**, **(2) `ClaritySPHook`**, and **(3) Sign Protocol’s `SP`** contract while integrated in the `ERC-4337` Account Abstraction module infrastructure provided by Biconomy.
 
 The main `Clarity.sol` manages all cash flow from order payments between customers and merchants while enabling reviews through Sign Protocol’s attestations. To enable the best flexibility and convenience for users, the contract integrates multi-token swaps via OneInchSwapHelper to facilitate payment settlement in different currencies.
