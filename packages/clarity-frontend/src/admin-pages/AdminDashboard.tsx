@@ -5,9 +5,12 @@ import PastTransactionCard from "../admin-components/PastTransactionCard";
 import { getReviews } from "../sign-protocol/getReviews";
 import { useEffect, useState } from "react";
 
-interface Review {
+export interface Review {
   ratings: number;
   comment: string;
+  id: string;
+  merchant: string;
+  reviewer: string;
 }
 
 function AdminDashboard() {
@@ -43,7 +46,7 @@ function AdminDashboard() {
 
         <div className="max-w-md flex flex-col space-y-4 mt-4 w-full min-w-[320px] md:min-w-[720px]">
           <RevenueCard />
-          <RatingCard rating={averageRating} />
+          <RatingCard rating={averageRating} reviews={reviews} />
           <PastTransactionCard />
         </div>
       </div>

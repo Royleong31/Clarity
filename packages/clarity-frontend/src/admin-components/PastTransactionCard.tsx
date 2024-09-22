@@ -186,7 +186,7 @@ function PastTransactionCard() {
             <TableRow>
               <TableHead className="text-left">Customer</TableHead>
               <TableHead className="text-center">Date</TableHead>
-              <TableHead className="text-right">View Attestations</TableHead>
+              <TableHead className="text-right">View Transactions</TableHead>
               <TableHead className="hidden xl:table-column">Status</TableHead>
               <TableHead className="hidden xl:table-column">Date</TableHead>
             </TableRow>
