@@ -38,7 +38,7 @@ const getNounsImage = (addresses: string[]) => {
 
 const addressToEns: Record<string, string> = {
   "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee": "Unpaid",
-  "0x8e9368e7800fc560a6fa686af07187e08da201e7": "matthew.ens",
+  "0x8e9368e7800fc560a6fa686af07187e08da201e7": "matthew.eth",
 };
 
 function shortenEthereumAddress(
